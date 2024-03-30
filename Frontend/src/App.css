@@ -1,0 +1,12 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@1,900&display=swap');
+body{
+  font-family: 'Anton', sans-serif;
+  font-family: 'Roboto', sans-serif;
+} */
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Arvo:wght@700&family=DM+Serif+Display&display=swap');
+h1{
+  font-family: 'Anton', sans-serif;
+  font-family: 'Arvo', serif;
+  font-family: 'DM Serif Display', serif;
+}
