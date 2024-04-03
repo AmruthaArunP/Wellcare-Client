@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {  useDispatch } from "react-redux";
-import axios from "../../services/axiosInterceptor.js";
+import doctorAxios from "../../services/doctorAxiosInterceptor.js";
 import { useNavigate, useLocation  } from "react-router-dom";
 import Swal from "sweetalert2";
 import { setDoctorData } from "../../redux/doctorData.js";
@@ -29,18 +29,14 @@ function DocUpdateProfile() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [msg, setMsg] = useState("");
+  const doctorToken = localStorage.getItem("doctorToken");
 
   const qualifications = ["MBBS","MS","MD","BAMS","BHMS","BPT","B.VSc","BUMS","BSMS","BNYS"];
 
   useEffect(() => {
     const fetchDepartments = async () => {
-      const doctorToken = localStorage.getItem("doctorToken");
       try {
-        const response = await axios.get("doctor/departments", {
-          headers: {
-            Authorization: `Bearer ${doctorToken}`,
-          },
-        });
+        const response = await doctorAxios.get("doctor/departments");
         if (response.data) {
           setDepartments(response.data);
         }
@@ -96,12 +92,7 @@ function DocUpdateProfile() {
 
     const doctorToken = localStorage.getItem("doctorToken");
     try {
-      const response = await axios.post("doctor/updateProfile", formData, {
-        headers: {
-          Authorization: `Bearer ${doctorToken}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await doctorAxios.post("doctor/updateProfile", formData);
       if (response.data) {
         dispatch(setDoctorData(response.data.updatedDoctor))
         console.log("message....",response.data.message);
@@ -140,11 +131,7 @@ function DocUpdateProfile() {
       if (confirmed.isConfirmed) {
       if (doctorData[0].documents.includes(doc)) {
         
-        const response = await axios.delete(`doctor/deleteDocument/${doc}`, {
-          headers: {
-            Authorization: `Bearer ${doctorToken}`,
-          },
-        });
+        const response = await doctorAxios.delete(`doctor/deleteDocument/${doc}`);
 
         if(response.data){
           console.log("updated document :", response.data);

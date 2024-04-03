@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from '../../services/axiosInterceptor.js'
+import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { setScheduleData } from "../../redux/doctorSchedule.js";
@@ -86,14 +86,8 @@ function Addshedule() {
    
 
     try {
-        const response = await axios.post('doctor/addSchedule',
-    {date: formatedDate, time:freeTime, action: e.target.value},
-    {
-        headers: {
-          Authorization: `Bearer ${doctorToken}`,
-        },
-      }
-    )
+        const response = await doctorAxios.post('doctor/addSchedule',
+    {date: formatedDate, time:freeTime, action: e.target.value} )
     if(response.data){     
         setMsg('Schedule updated successfully')
         dispatch(setScheduleData(response.data.updatedSchedule))

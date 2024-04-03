@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 function UserProfile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userToken = localStorage.getItem('userToken');
   const [user, setUser] = useState('');
 
   const handleUpdate = () => {
@@ -18,13 +17,12 @@ function UserProfile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('getUserProfile', {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        });
+        const userToken = localStorage.getItem('userToken');
+        const response = await axios.get('getUserProfile' );
         if (response.data) {
+          console.log('after fetching response in user profile- data',response.data);
           setUser(response.data);
+          console.log("user data after fetching:",user);
           dispatch(setUserdata(response.data[0]));
         }
       } catch (error) {

@@ -18,18 +18,15 @@ function BookingAppointment() {
   const [sessionTime, setSessionTime] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [timeList, setTimeList] = useState(['No data']);
-
   const userToken = localStorage.getItem('userToken')
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
     const dataCall = async () =>{
-        const response = await axios.get(`docSchedule/${docData._id}`,{
-            headers: {
-                Authorization: `Bearer ${userToken}`,
-              },  
-        })
+      console.log("doctor is:", docData._id);
+        const response = await axios.get(`docSchedule/${docData._id}`,)
         if(response.data === 'blocked'){
           navigate('/login');
           localStorage.removeItem('userToken');

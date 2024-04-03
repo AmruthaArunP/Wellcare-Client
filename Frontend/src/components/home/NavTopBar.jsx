@@ -1,30 +1,29 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../context/hooks/useAuth";
-import { setDoctorData } from "../../redux/doctorData";
-import { setUserdata } from "../../redux/userData";
 
-function NavTopBar() {
+function NavTopBar({value}) {
 
-   const { user, doctor, setUser, setDoctor } = useAuth();
+   const { setUser, setDoctor } = useAuth();
+  const userData = useSelector((state) => state.user.data)
+  const docData = useSelector((state) => state.doctor.data)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
 
-
   const handleLogout = () => {
-    if (doctor) {
+    if (value === 'doctor') {
       localStorage.removeItem("doctorToken");
-      dispatch(setDoctorData({}));
+      // dispatch(clearDocdata());
       setDoctor(false);
-      navigate("/doctor-login");
+      navigate("/");
     } else {
       localStorage.removeItem("userToken");
-      dispatch(setUserdata({}));
+      // dispatch(clearUserdata());
       setUser(false);
-      navigate("/login");
+      navigate("/");
     }
   };
 
@@ -61,10 +60,10 @@ function NavTopBar() {
       </div>
 
       <div className="flex items-center mx-4">
-        {user || doctor ? (
+        {value === 'user' && userData ||value === 'doctor' && docData ? (
           <>
             <Link
-              to={doctor ? "/doctor-home-page" : "/user-home-page"}
+              to={docData ? "/doctor-home-page" : "/user-home-page"}
               className="mx-2 text-xl text-white"
             >
               <AiOutlineUser

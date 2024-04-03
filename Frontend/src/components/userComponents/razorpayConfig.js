@@ -36,16 +36,11 @@ const loadScript = (src) => {
       };
 
       try {
-        const userToken = localStorage.getItem('userToken')
         const response = await axios.post('checkSlot',{
             doctor: appData.doctor,
             time: appData.time,
             day: appData.date,
             user: appData.user
-        },{
-            headers: {
-                Authorization: `Bearer ${userToken}`,
-              },
         }) 
 
         if (response.data !== 'unavailable') {

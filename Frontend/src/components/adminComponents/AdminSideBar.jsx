@@ -26,9 +26,6 @@ const AdminSideBar = () => {
         navigate('/department-details')
     },[navigate])
 
-    const handleMedicines = useCallback(() => {
-        navigate('/medicine-details')
-    },[navigate])
 
   return (
     <>
@@ -56,11 +53,7 @@ const AdminSideBar = () => {
                   <BiBuildings size={25} className="mr-4" /> Department
                 </button>
               </div>
-              <div className="text-xl buttons py-4 flex items-center" onClick={handleMedicines}>
-                <button className="btn flex items-center w-full border-4 p-2 bg-blue-300">
-                  <BsFileMedical size={25} className="mr-4" /> Medicines
-                </button>
-              </div>
+
             </div>
           </nav>
         </div>

@@ -1,14 +1,15 @@
 import React from "react";
-import NavTopBar from "../components/home/NavTopBar";
 import ForgotPassword from "../components/ForgotPassword";
 import Footer from "../components/home/Footer";
+import NavbarDoctor from "../components/doctorComponents/NavbarDoctor";
+import NavbarUser from "../components/userComponents/NavbarUser";
 
 function ForgotPasswordPage({ value }) {
   return (
     <div>
-      <NavTopBar />
+      {value === "doctor" ? <NavbarDoctor /> : <NavbarUser />}
       {value === "doctor" ? (
-        <ForgotPassword user = {"doctor"} />
+        <ForgotPassword user={"doctor"} />
       ) : (
         <ForgotPassword />
       )}

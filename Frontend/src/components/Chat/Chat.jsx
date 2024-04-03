@@ -1,6 +1,5 @@
 import React , { useEffect, useState } from 'react'
 import './chat.css'
-
 import axios from '../../services/axiosInterceptor.js'
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -16,6 +15,8 @@ function Chat({user}) {
     const chatId = url.pathname.split('/').pop();
     const socket = useSocket();
     const selecter = useSelector((state) => state.chatRoomId);
+    const userToken = localStorage.getItem('userToken');
+    const doctorToken = localStorage.getItem('doctorToken');
 
     const [docData, setDocData] = useState([]);
     const [usrData, setUsrData] = useState([]);
@@ -44,7 +45,7 @@ function Chat({user}) {
     }, [selecter])
 
     var chatdoc
-    if(user=='doctor')
+    if(user==='doctor')
     {
         chatdoc=useParams()
     }
@@ -55,14 +56,10 @@ function Chat({user}) {
             const chatId = selecter.chatRoomId
             if (user === 'user') {
                 console.log(49);
-                const token = localStorage.getItem('userToken');
+               
                 // const axiosInstance = createInstance(token)
                 // const response = await axiosInstance.get(`booking/load-user-chatess/${chatId}`)
-                const response = await axios.get( `load-user-chatess/${chatId}`, {
-                    headers: {
-                      Authorization: `Bearer ${token}`
-                    }
-                  })
+                const response = await axios.get( `load-user-chatess/${chatId}`)
 
                 
                console.log(50);
@@ -75,15 +72,9 @@ function Chat({user}) {
                 console.log(chatdoc.chatId,122);
                 const chatId=chatdoc.chatId
                 console.log(chatId,133);
-                const doctortoken = localStorage.getItem('doctorToken');
                 // const axiosInstance = createInstance(doctortoken);
                 // const response = await axiosInstance.get(`booking/load-doc-chatess/${chatId}`)
-                console.log("dr token in chat *******",doctortoken);
-                const response = await axios.get( `doctor/load-doc-chatess/${chatId}`, {
-                    headers: {
-                      Authorization: `Bearer ${doctortoken}`
-                    }
-                  })
+                const response = await axios.get( `doctor/load-doc-chatess/${chatId}`)
 
              
                 

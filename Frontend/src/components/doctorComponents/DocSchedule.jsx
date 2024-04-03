@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from '../../services/axiosInterceptor.js'
+import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 import { setScheduleData } from "../../redux/doctorSchedule.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 
 
 function DocSchedule() {
@@ -14,9 +13,6 @@ function DocSchedule() {
   const doctorToken = localStorage.getItem('doctorToken');
   const [msg , setMsg] = useState('')
 
-
-
-
   const hanbleAddButton = () => {
     navigete('/add-schedule-timings')
   }
@@ -25,14 +21,8 @@ function DocSchedule() {
      try {
       e.preventDefault();
       const data = e.target.value.split('_');
-      const response = await axios.post('doctor/removeSchedule',
-      {date : data[0], time : data[1], action : 'remove'},
-      {
-        headers: {
-          Authorization: `Bearer ${doctorToken}`,
-        },
-      }
-      )
+      const response = await doctorAxios.post('doctor/removeSchedule',
+      {date : data[0], time : data[1], action : 'remove'})
       if(response.data){ 
         console.log("comming data");    
         setMsg('Schedule updated successfully')
@@ -50,11 +40,7 @@ function DocSchedule() {
 
   useEffect(() => {
     const dataCall = async () => {
-      const response = await axios.get('doctor/getSchedule',{
-        headers: {
-          Authorization: `Bearer ${doctorToken}`,
-        },
-      })
+      const response = await doctorAxios.get('doctor/getSchedule')
       if(response.data){
         console.log('getting:', response.data);
         dispatch(setScheduleData(response.data))

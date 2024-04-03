@@ -1,14 +1,14 @@
 import React from "react";
 import Login from "../components/Login";
 import Footer from "../components/home/Footer";
-import NavTopBar from "../components/home/NavTopBar";
+import NavbarDoctor from "../components/doctorComponents/NavbarDoctor";
+import NavbarUser from "../components/userComponents/NavbarUser";
 
 function LoginPage({ value }) {
   return (
     <div>
-      <NavTopBar/>
+      {value === "doctor" ? <NavbarDoctor /> : <NavbarUser />}
       {value === "doctor" ? <Login value={"doctor"} /> : <Login />}
-      
 
       <Footer />
     </div>

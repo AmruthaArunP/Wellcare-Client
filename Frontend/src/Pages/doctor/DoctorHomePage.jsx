@@ -1,12 +1,14 @@
-import React from 'react'
-import NavTopBar from '../../components/home/NavTopBar'
+import React, { useEffect } from 'react'
 import Footer from '../../components/home/Footer'
 import DoctorBasePage from './DoctorBasePage'
+import NavbarDoctor from '../../components/doctorComponents/NavbarDoctor'
+
 
 function DoctorHomePage({data}) {
+
   return (
     <>
-        <NavTopBar />
+        <NavbarDoctor/>
         
         {data === 'home' && <DoctorBasePage value={'home'}/>}
         {data === 'docProfile' && <DoctorBasePage value={'docProfile'}/> }
@@ -17,6 +19,9 @@ function DoctorHomePage({data}) {
         {data === 'addTimings' && <DoctorBasePage value={'addTimings'}/> }
         {data === 'docPriscription' && <DoctorBasePage value={'docPriscription'}/> }
         {data === 'docNewPriscription' && <DoctorBasePage value={'docNewPriscription'}/> }
+        {/* {data === 'chat' && <DoctorBasePage value={'chat'}/>} */}
+
+
 
 
                      

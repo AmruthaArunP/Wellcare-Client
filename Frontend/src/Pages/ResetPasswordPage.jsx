@@ -6,7 +6,13 @@ import Footer from '../components/home/Footer'
 function ResetPasswordPage({value}) {
   return (
     <>
-    <NavTopBar/>
+         {value === 'doctor' ? (
+      <NavTopBar value={'doctor'}/>
+
+      ): (
+        <NavTopBar value = {'user'}/>
+
+      )}
     {value === 'doctor' ? (
         <ResetPassword value = {'doctor'}/>
     ) : (

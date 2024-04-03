@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 function UserUpdateProfile() {
 
     const userData = useSelector(state => state.user.data)
+    console.log("userDtata in updatesd profile:",userData);
     const dispatch = useDispatch()
     const navigate =useNavigate()
 
@@ -24,7 +25,7 @@ function UserUpdateProfile() {
     const [msg, setMsg] = useState("");
     const [docChange, setDocChange] = useState(false);
     const [prChange, setProfileChange] = useState(false);
-
+    const userToken = localStorage.getItem("userToken");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,14 +63,8 @@ function UserUpdateProfile() {
           return;
         }
     
-        const userToken = localStorage.getItem("userToken");
         try {
-          const response = await axios.post("updateProfile", formData, {
-            headers: {
-              Authorization: `Bearer ${userToken}`,
-              "Content-Type": "multipart/form-data",
-            },
-          });
+          const response = await axios.post("updateProfile", formData);
           if (response.data === 'blocked') {
             navigate('/login');
             localStorage.removeItem('userToken');
@@ -98,14 +93,9 @@ function UserUpdateProfile() {
       };
 
       const deleteImage = async (doc) => {
-        const userToken = localStorage.getItem("userToken");
         try {
           if (userData.documents.includes(doc)) {
-            const response = await axios.delete(`deleteDocument/${doc}`, {
-              headers: {
-                Authorization: `Bearer ${userToken}`,
-              },
-            });
+            const response = await axios.delete(`deleteDocument/${doc}`);
             if(response.data){
               console.log("coming delete data after delete:;;;;", response.data);
               setDocuments((prevDocuments) =>

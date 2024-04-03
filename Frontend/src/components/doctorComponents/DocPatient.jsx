@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState }  from 'react'
 import DataTables from '../../components/adminComponents/DataTables'; 
-import axios from '../../services/axiosInterceptor.js'
+import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 
 
 function DocPatient() {
@@ -8,14 +8,10 @@ function DocPatient() {
   const [patientsData, setPatientsData] = useState()
   const [search, setSearch] = useState('')
   const [filteredData, setFilteredData] = useState([])
+  const doctorToken = localStorage.getItem('doctorToken')
 
   const prescriptionData = useCallback(async () => {
-    const doctorToken = localStorage.getItem('doctorToken')
-    await axios.get( 'doctor/patients', {
-        headers: {
-            Authorization: `Bearer ${doctorToken}`,
-        }
-    }).then(res => {
+    await doctorAxios.get( 'doctor/patients').then(res => {
         console.log("comming patient data:",res.data);
         setPatientsData(res.data)
         setFilteredData(res.data)

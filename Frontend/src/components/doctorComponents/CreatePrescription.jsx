@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import axios from '../../services/axiosInterceptor.js'
+import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 import { Link, useNavigate } from 'react-router-dom';
 
 function CreatePrescription() {
     const userData = useSelector(state => state.prescription.data);
+    const doctorToken = localStorage.getItem('doctorToken');
     const descriptionRef = useRef();
     const doseRef = useRef();
     const history = useNavigate();
@@ -30,11 +31,8 @@ function CreatePrescription() {
             id
         }));
         console.log("typed data: **((())))))****",payload);
-        await axios.patch( 'doctor/addPrescription', payload, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('doctorToken')}`,
-            },
-        }).then(res => {
+        await doctorAxios.patch( 'doctor/addPrescription', payload)
+        .then(res => {
             if (res.data === 'done') {
                 history('/doctor-consultation');
             }

@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 function BaseAdminPage({ value }) {
   const navigate = useNavigate()
   const { admin} =useAuth()
-  if(!admin){
+  const adminToken = localStorage.getItem('adminToken')
+  if(!adminToken){
     navigate("/admin-login");
     return null;
   }

@@ -11,10 +11,6 @@ import ForgotPasswordPage from './Pages/ForgotPasswordPage';
 import DoctorHomePage from './Pages/doctor/DoctorHomePage';
 import AdminBasePage from './Pages/admin/AdminBasePage';
 import BaseAdminPage from './components/adminComponents/BaseAdminPage';
-import ProtectedRoute from './components/adminComponents/ProtectedRoute';
-import PublicRoute from './components/adminComponents/PublicRoute';
-import PublicUserDoctor from './components/PublicUserDoctor';
-import ProtectedUserDoctor from './components/ProtectedUserDoctor';
 import RequireDoctor from './context/auth/RequireDoctor';
 import UpdateDoctorProfilePage from './Pages/doctor/UpdateDoctorProfilePage';
 import UserHomePage from './Pages/user/UserHomePage';
@@ -32,6 +28,9 @@ import DocSuccessPage from './Pages/doctor/DocSuccessPage';
 import ChatPage from './Pages/ChatPage';
 import SpecialitiesPage from './Pages/home/SpecialitiesPage';
 import DoctorsInSpecialityPage from './Pages/home/DoctorsInSpecialityPage';
+import RequireAdmin from './context/auth/RequireAdmin';
+import DoctorChatPage from './Pages/doctor/DoctorChatPage';
+import UserChatPage from './Pages/user/UserChatPage';
 
 
 
@@ -40,12 +39,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path='/admin-login' element = {<PublicRoute> <AdminLoginPage/></PublicRoute>}/>
-          <Route path='/admin-homePage' element = {<ProtectedRoute><AdminBasePage data={'dashboard'}/></ProtectedRoute>}/>
-          <Route path='/admin-doctors-details' element = {<ProtectedRoute><AdminBasePage data = {'doctor'} /></ProtectedRoute>}/>
-          <Route path='/admin-patient-details' element = {<ProtectedRoute><AdminBasePage data = {'patient'}/></ProtectedRoute>}/>
-          <Route path='/department-details' element={<ProtectedRoute><AdminBasePage data = {'department'}/></ProtectedRoute>}/>
-          
+          <Route path='/admin-login' element = { <AdminLoginPage/>}/>
+          {/* <Route element={<RequireAdmin/>}> */}
+          <Route path='/admin-homePage' element = {<AdminBasePage data={'dashboard'}/>}/>
+          <Route path='/admin-doctors-details' element = {<AdminBasePage data = {'doctor'} />}/>
+          <Route path='/admin-patient-details' element = {<AdminBasePage data = {'patient'}/>}/>
+          <Route path='/department-details' element={<AdminBasePage data = {'department'}/>}/>
+          {/* </Route> */}
 
 
           <Route path='/' element = {<Home/>}/>
@@ -59,6 +59,7 @@ function App() {
           <Route path='/doctors-department/:specialityName' element={<DoctorsInSpecialityPage/>}/>
 
           <Route element={<RequireUser/>}>
+          
             <Route path='/user-home-page' element={<UserHomePage data= {'userProfile'}/>}/>
             <Route path='/user-appoinment' element={<UserHomePage data={'userAppoinment'}/>}/>
             <Route path='/user-prescription' element={<UserHomePage data={'userPrescription'}/>}/>
@@ -68,7 +69,7 @@ function App() {
             <Route path='/success-page' element={<SuccessPage/>}/>
             <Route path='/call/:room' element={<VideoCall value={'user'}/>} />
             <Route path='/feedback' element={<FeedbackPage />} />
-            <Route path='/chat/:chatId' element={<ChatPage user={'user'} />} />
+            <Route path='/chat' element={<UserChatPage/>} />
 
             </Route>
 
@@ -94,7 +95,7 @@ function App() {
             <Route path='/add-schedule-timings' element={<DoctorHomePage data={'addTimings'}/>}/>
             <Route path='/doctor-call/:room' element={<VideoCall value={'doctor'} /> }/>
             <Route path='/doctor-success' element={<DocSuccessPage/>} />
-            <Route path="/doctor-chat/:chatId" element={<ChatPage user={'doctor'} />} />
+            <Route path="/doctor-chat" element={<DoctorChatPage />} />
 
           </Route>
 

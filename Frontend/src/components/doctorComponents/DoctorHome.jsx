@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useSocket } from '../../context/socket/socketProvider.jsx'
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom'
-import axios from '../../services/axiosInterceptor.js'
+import doctorAxios from '../../services/doctorAxiosInterceptor.js'
+import { useSelector } from 'react-redux'
+
 
 
 function DoctorHome() {
@@ -11,15 +13,17 @@ function DoctorHome() {
 
   const [income, setIncome] = useState('')
   const [patients, setPatients] = useState('')
-  const doctorToken = localStorage.getItem('doctorToken')
   const [docAppoint, setDocAppoint] = useState([])
   const [docId, setDocId] = useState(null);
   const navigate = useNavigate()
+  const doctorToken = localStorage.getItem('doctorToken')
+
 
   useEffect(() => {
-    
+    console.log('effect is working');
 
     socket.on('user-requested', (user, roomId) => {
+      
       console.log("DoctorHome ====>   room is",user,roomId);
       Swal.fire({
         title: 'Chat Request',
@@ -54,11 +58,7 @@ function DoctorHome() {
         try {
           console.log(11);
         
-          const response =  await axios.get('doctor/schedule-data', {
-            headers: {
-              Authorization: `Bearer ${doctorToken}`
-            }
-          })
+          const response =  await doctorAxios.get('doctor/schedule-data')
           if (response.status === 200 && response.data.schedule.length > 0) {
             console.log("backend data : ******",response.data.schedule[0].doctor);
             setDocId(response.data.schedule[0].doctor);

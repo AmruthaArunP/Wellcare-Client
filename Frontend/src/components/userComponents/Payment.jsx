@@ -10,7 +10,7 @@ function Payment() {
     const amount = appData.fee + (appData.fee * 0.1);
 
     const [err, setErr] = useState()
-    const userToken = localStorage.getItem('userToken')
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,12 +29,7 @@ function Payment() {
         },4000)
       }else{
         if(payment){
-          const response = await axios.post('bookSlot',appData,
-          {
-            headers: {
-              Authorization: `Bearer ${userToken}`
-            }
-          })
+          const response = await axios.post('bookSlot',appData,)
           if(response.data === 'success'){
             navigate('/success-page')
           }else if (res.data == 'blocked') {

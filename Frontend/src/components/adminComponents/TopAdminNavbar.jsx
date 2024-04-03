@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../context/hooks/useAuth";
 
@@ -6,6 +6,13 @@ function TopAdminNavbar() {
 
   const navigate = useNavigate()
   const {admin , setAdmin } = useAuth()
+
+  useEffect(()=>{
+    const adminToken= localStorage.getItem('adminToken')
+    if(!adminToken){
+      navigate('/admin-login')
+    }
+  })
 
   const handleSignout = ()=>{
     localStorage.removeItem("adminToken");

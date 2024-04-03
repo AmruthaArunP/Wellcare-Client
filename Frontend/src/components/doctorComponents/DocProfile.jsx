@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../../services/axiosInterceptor.js';
+import doctorAxios from '../../services/doctorAxiosInterceptor.js';
 import { useNavigate } from 'react-router-dom';
 import { setDoctorData } from '../../redux/doctorData.js';
 import { useDispatch } from 'react-redux';
@@ -13,11 +13,7 @@ function DocProfile() {
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
-        const response = await axios.get('doctor/getDoctorProfile', {
-          headers: {
-            Authorization: `Bearer ${doctorToken}`,
-          },
-        });
+        const response = await doctorAxios.get('doctor/getDoctorProfile');
         if (response.data) {
           setDoctorDataLocal(response.data);
           dispatch(setDoctorData(response.data));

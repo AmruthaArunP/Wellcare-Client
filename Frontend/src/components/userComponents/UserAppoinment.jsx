@@ -25,6 +25,7 @@ function UserAppoinment() {
   const minutes = date.getMinutes();
   const period = hours >= 12 ? 'PM' : 'AM';
   const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  console.log("appoinmtnts in appoinment page - after fetching:",appointments);
 
   // Pad minutes with leading zeros
   const formattedMinutes = minutes.toString().padStart(2, '0');
@@ -34,12 +35,7 @@ function UserAppoinment() {
   // Appoinment Cancel
   const handleCancelAppointment = useCallback(async (id) => {
     console.log("cancel app id is:", id);
-    const response =await axios.post(`cancelAppoinment/${id}`, null, {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    }
-    )
+    const response =await axios.post(`cancelAppoinment/${id}`, null)
     if(response.data === 'blocked'){
       history('/login')
       localStorage.removeItem('userToken')
@@ -63,11 +59,7 @@ function UserAppoinment() {
   useEffect(() => {
     
     const fetchAppoinments = async () =>{
-        const response = await axios.get('userAppoinments', {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
+        const response = await axios.get('userAppoinments', )
       if( response.data === 'blocked'){
         localStorage.removeItem('userToken')
         navigate('/login',{ state: { errorMsg: 'User is blocked' } })
@@ -123,24 +115,31 @@ useEffect(() => {
 
 //chat
 
-const handleChat = (roomId, docterId) => {
-
-  if (userData && appointments && docterId) {
-    socket.emit('setup', userData);
-    socket.emit('join-chat', roomId, userData, docterId);
-
-    const handleRoomJoin = () => {
-      dispatch(addChatRoomId(roomId))
-      navigate(`/chat/${docterId}`)
-    }
-
-    socket.on('chat-connected', handleRoomJoin);
-
-    return () => {
-      socket.off('chat-connected', handleRoomJoin);
-    }
-  }
+const handleChat = (appoinmentId, docterId) => {
+  // dispatch(addChatRoomId(appoinmentId))
+  const appmtId = appoinmentId;
+  const docId = docterId;
+  navigate('/chat', { state : { appmtId, docId}})
 }
+
+// const handleChat = (roomId, docterId) => {
+
+//   if (userData && appointments && docterId) {
+//     socket.emit('setup', userData);
+//     socket.emit('join-chat', roomId, userData, docterId);
+
+//     const handleRoomJoin = () => {
+//       dispatch(addChatRoomId(roomId))
+//       navigate(`/chat/${docterId}`)
+//     }
+
+//     socket.on('chat-connected', handleRoomJoin);
+
+//     return () => {
+//       socket.off('chat-connected', handleRoomJoin);
+//     }
+//   }
+// }
 
 
 

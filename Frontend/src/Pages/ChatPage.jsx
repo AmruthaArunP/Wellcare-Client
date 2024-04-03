@@ -1,17 +1,21 @@
-import React from 'react'
-import NavTopBar from '../components/home/NavTopBar'
-import Chat from '../components/Chat/Chat'
-
-function ChatPage({user}) {
+import React from "react";
+import ChatBody from "../components/userComponents/ChatBodyUser"
+import ChatBar from '../components/userComponents/ChatBarUser'
+function ChatPage({ value }) {
   return (
     <>
-    <NavTopBar/>
-    {user === 'user' ? <Chat user={'user'}/> : <Chat user={'doctor'}/>}
-    <Chat />
+        <div>
+        <h1> chat page</h1>
+        <div className="chat">
+          <ChatBar />
+          <div className="chat__main">
+            {value === 'user' ? <ChatBody user={"user"} />: <ChatBody user={"doctor"} />}
+            
+          </div>
+        </div>
+      </div>
     </>
-
-
-  )
+  );
 }
 
-export default ChatPage
+export default ChatPage;

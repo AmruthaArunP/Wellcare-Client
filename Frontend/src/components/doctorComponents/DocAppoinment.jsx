@@ -1,11 +1,10 @@
 import React, { useEffect,useState } from 'react'
-import axios from '../../services/axiosInterceptor.js'
+import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 import DataTables from '../adminComponents/DataTables.jsx';
 
 function DocAppoinment() {
 
   const doctorToken = localStorage.getItem('doctorToken');
-
   const [search, setSearch] = useState('');
   const [appointments, setAppointments] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -54,11 +53,7 @@ function DocAppoinment() {
 
   useEffect(() => {
     const fetchAppoinment =  async () => {
-      const response =  await axios.get("doctor/doctorAppoinments",{
-        headers: {
-          Authorization: `Bearer ${doctorToken}`,
-        },
-      }) 
+      const response =  await doctorAxios.get("doctor/doctorAppoinments") 
       if(response.data){
         console.log('appoinmnet:',response.data);
         setAppointments(response.data)

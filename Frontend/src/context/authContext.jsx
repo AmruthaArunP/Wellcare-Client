@@ -1,19 +1,39 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
-function AuthProvider ({ children }){
+function AuthProvider ({ children }) {
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : false;
+    });
+    const [doctor, setDoctor] = useState(() => {
+        const storedDoctor = localStorage.getItem('doctor');
+        return storedDoctor ? JSON.parse(storedDoctor) : false;
+    });
+    const [admin, setAdmin] = useState(() => {
+        const storedAdmin = localStorage.getItem('admin');
+        return storedAdmin ? JSON.parse(storedAdmin) : false;
+    });
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [ user , setUser ] = useState(false);
-    const [ doctor , setDoctor] = useState(false);
-    const [ admin , setAdmin] = useState(false);
-    const [isLoading, setIsLoading] = useState(true)
+    useEffect(() => {
+        localStorage.setItem('user', JSON.stringify(user));
+    }, [user]);
 
-    return(
-        <AuthContext.Provider value = {{ user,setUser,doctor,setDoctor,admin,setAdmin,isLoading,setIsLoading}}>
+    useEffect(() => {
+        localStorage.setItem('doctor', JSON.stringify(doctor));
+    }, [doctor]);
+
+    useEffect(() => {
+        localStorage.setItem('admin', JSON.stringify(admin));
+    }, [admin]);
+
+    return (
+        <AuthContext.Provider value={{ user, setUser, doctor, setDoctor, admin, setAdmin, isLoading, setIsLoading }}>
             {children}
         </AuthContext.Provider>
-    )
+    );
 }
 
 export default AuthProvider;

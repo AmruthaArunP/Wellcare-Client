@@ -2,11 +2,12 @@ import React , {useEffect, useState} from 'react'
 import { Link ,useNavigate, useLocation  } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from '../firebase/config.js';
-import { validateEmail } from './Validation';
+import { validateEmail } from './Validation.js';
 import useAuth from '../context/hooks/useAuth.js';
 import banerimage from '../assets/baner1.jpg'
 import axios from '../services/axiosInterceptor.js';
-import { useDispatch } from 'react-redux'
+import doctorAxios from '../services/doctorAxiosInterceptor.js'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUserdata } from '../redux/userData.js';
 import { setDoctorData } from '../redux/doctorData.js';
 
@@ -18,60 +19,70 @@ function Login({value}) {
   const dispatch = useDispatch()
   const location = useLocation()
 
-  const {user , setUser , setDoctor} = useAuth();
+  const {user ,doctor, setUser , setDoctor} = useAuth();
   const [email , setEmail] = useState('');
   const [password , setPassword] = useState('');
   const [errorMsg , setErrorMsg] = useState('');
   const provider = new GoogleAuthProvider()
 
-  useEffect(() => {
-    const Token = localStorage.getItem(value === 'doctor' ? "doctorToken" : "userToken" )
-    if(Token){
-      navigate('/');
+  useEffect(()=>{
+    if(user){
+      navigate('/')
+    }else if(doctor){
+      navigate('/doctor-home-page')
     }
-    if (location.state && location.state.errorMsg) {
-      setErrorMsg(location.state.errorMsg);
-    }
-  },[value , navigate, location.state ])
+        
+  })
+
+
 
   const handleDrLogInNav = () => {
       localStorage.removeItem("doctorToken");
       navigate("/doctor-login");
   };
 
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!email || !password){
-      setErrorMsg('Please fill all the blanks..')
-      return
+    if (!email || !password) {
+      setErrorMsg('Please fill all the blanks..');
+      return;
     }
     if (!validateEmail(email)) {
-      setErrorMsg('Invalid Email id,Please enter valid email id.')
+      setErrorMsg('Invalid Email id,Please enter valid email id.');
       return;
-  }
-  try {
-    const response = await axios.post(value === 'doctor' ? 'doctor/login' : 'login', {
-      email,
-      password,
-    });
-    if (response.data.error === 'unauthorized') {
-      setErrorMsg('Invalid email or password');
-    } else if (response.data.error === 'unverified') {
-      setErrorMsg('Email not verified. Please check your email.');
-    } else if (response.data.error === 'blocked') {
-      console.log('blocked:',response.data.error);
-      setErrorMsg('This account has been blocked. Please contact the support team.');
-    } else {
-      localStorage.setItem(value === 'doctor' ? 'doctorToken' : 'userToken', response.data.token);
-      value === 'doctor' ? dispatch(setDoctorData(response.data.doctorData)) : dispatch(setUserdata(response.data.userData))
-      value === 'doctor'? setDoctor(true) : setUser(true);
-      navigate('/');
     }
-  } catch (error) {
-    console.error('Error logging in:', error);
-   
-  }
-}
+    try {
+      let response;
+      if (value === 'doctor') {
+        response = await doctorAxios.post('doctor/login', { email, password });
+      } else {
+        response = await axios.post('login', { email, password });
+      }
+      if (response.data.error === 'unauthorized') {
+        setErrorMsg('Invalid email or password');
+      } else if (response.data.error === 'unverified') {
+        setErrorMsg('Email not verified. Please check your email.');
+      } else if (response.data.error === 'blocked') {
+        console.log('blocked:', response.data.error);
+        setErrorMsg('This account has been blocked. Please contact the support team.');
+      } else {
+        if (value === 'doctor') {
+          localStorage.setItem('doctorToken', response.data.token);
+          dispatch(setDoctorData(response.data.doctorData));
+          setDoctor(true);
+          navigate('/doctor-home-page');
+        } else {
+          localStorage.setItem('userToken', response.data.token);
+          dispatch(setUserdata(response.data.userData));
+          setUser(true);
+          navigate('/');
+        }
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+  };
+  
 
 const submitSignInWithGoogle = async (displayName, email) => {
   try {

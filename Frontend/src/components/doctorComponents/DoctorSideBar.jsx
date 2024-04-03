@@ -19,6 +19,10 @@ const handleProfile = useCallback(() => {
   navigate('/doctor-profile');
 },[navigate])
 
+const handleChat = useCallback(() => {
+  navigate('/doctor-chat');
+},[navigate])
+
 const handleAppoinments = useCallback(() => {
   navigate('/doctor-appoinment');
 },[navigate])
@@ -53,6 +57,11 @@ const handlePrescription = useCallback(() => {
               <div className="text-xl buttons py-4 flex items-center" >
                 <button className="rounded-lg btn flex items-center w-full border-4 p-2 bg-teal-500 " onClick={handleProfile}>
                   <MdPerson size={25} className="mr-4" /> My profile
+                </button>
+              </div>
+              <div className="text-xl buttons py-4 flex items-center" >
+                <button className="rounded-lg btn flex items-center w-full border-4 p-2 bg-teal-500 " onClick={handleChat}>
+                  <MdPerson size={25} className="mr-4" /> Chat
                 </button>
               </div>
               <div className="text-xl buttons py-4 flex items-center" >

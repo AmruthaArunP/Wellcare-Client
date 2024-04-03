@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import axios from "../../services/axiosInterceptor.js";
+import doctorAxios from "../../services/doctorAxiosInterceptor.js";
 import { setSlot } from "../../redux/consult.js";
 import { setData } from "../../redux/prescriptionData.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,11 +19,7 @@ function DocConsultation() {
   useEffect(() => {
     const datacall = async () => {
       try {
-        const appointData = await axios.get("doctor/consult", {
-          headers: {
-            Authorization: `Bearer ${doctorToken}`,
-          },
-        });
+        const appointData = await doctorAxios.get("doctor/consult");
 
         if (appointData.data) {
           // Filter and update the consult data to include the "expired" status
@@ -102,6 +98,14 @@ function DocConsultation() {
     };
   }, [socket, handleJoinRoom]);
 
+  //chat
+
+const handleChat = (appoinmentId, userId) => {
+  const appmtId = appoinmentId;
+  const usrId = userId;
+  navigate('/doctor-chat', { state : { appmtId, usrId}})
+}
+
   return (
     <>
       <div className="appoints text-center p-3 m-5 border rounded-lg shadow-lg bg-white">
@@ -131,12 +135,23 @@ function DocConsultation() {
                       <p className="text-sm">Attended</p>
                     ) : !el.isCancelled ? (
                       <>
-                        <button
+                      <div>
+                      <button
                           className="btn bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2"
                           onClick={() => handleJoin(el._id, el._id + el.user)}
                         >
                           Join
                         </button>
+                        <button
+                          className=" bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2"
+                          onClick={() => handleChat(el._id , el.user )}
+                        >
+                          Chat
+                        </button>
+
+                      </div>
+
+                        
                         <br />
                       </>
                     ) : (

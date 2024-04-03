@@ -4,12 +4,12 @@ import ContactTopBar from './ContactTopBar'
 import Footer from './Footer'
 import MainBody from './MainBody'
 import NavbarUser from '../userComponents/NavbarUser'
-import NavTopBar from './NavTopBar'
+
 
 function Layout() {
   return (
     <div>
-      <NavTopBar/>
+      <NavbarUser/>
       <ContactTopBar/>
       <MainBody/>
       <Footer/>

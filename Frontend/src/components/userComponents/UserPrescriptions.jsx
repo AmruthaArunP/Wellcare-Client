@@ -13,11 +13,7 @@ function Prescription() {
 
   const dataCall = useCallback(async () => {
     try {
-      const response = await axios.get('prescriptions', {
-        headers: {
-          Authorization: `Bearer ${userToken}`
-        }
-      });
+      const response = await axios.get('prescriptions', );
       if (response.data === 'blocked') {
         history('/login')
         localStorage.removeItem('userToken')

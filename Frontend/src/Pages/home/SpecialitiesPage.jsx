@@ -3,11 +3,12 @@ import Specialities from '../../components/home/Specialities'
 import NavTopBar from '../../components/home/NavTopBar'
 import Footer from '../../components/home/Footer'
 import SpecialityCard from '../../components/SpecialityCard'
+import NavbarUser from '../../components/userComponents/NavbarUser'
 
 function SpecialitiesPage() {
   return (
 <>
-<NavTopBar/>
+<NavbarUser/>
 <SpecialityCard/>
 <Footer/>
 </>
