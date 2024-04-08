@@ -59,11 +59,11 @@ const handlePrescription = useCallback(() => {
                   <MdPerson size={25} className="mr-4" /> My profile
                 </button>
               </div>
-              <div className="text-xl buttons py-4 flex items-center" >
+              {/* <div className="text-xl buttons py-4 flex items-center" >
                 <button className="rounded-lg btn flex items-center w-full border-4 p-2 bg-teal-500 " onClick={handleChat}>
                   <MdPerson size={25} className="mr-4" /> Chat
                 </button>
-              </div>
+              </div> */}
               <div className="text-xl buttons py-4 flex items-center" >
                 <button className="rounded-lg btn flex items-center w-full border-4 p-2 bg-teal-500" onClick={handleShedule}>
                   <BiBuildings size={25} className="mr-4" /> My Schedule

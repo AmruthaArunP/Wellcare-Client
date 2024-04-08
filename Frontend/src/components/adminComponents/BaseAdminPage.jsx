@@ -5,6 +5,7 @@ import Patients from './Patients'
 import Department from './Department'
 import useAuth from "../../context/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import AdminDashboard from "./AdminDashboard";
 
 function BaseAdminPage({ value }) {
   const navigate = useNavigate()
@@ -23,7 +24,7 @@ function BaseAdminPage({ value }) {
         </div>
         <div className="w-full lg:w-4/5 max-h-screen px-4 py-4  ">
           <div className="  border-4 rounded p-10 bg-slate-200">
-            {value === 'dashboard' && <h1>This is Admin Dashboard</h1>}
+            {value === 'dashboard' && <AdminDashboard/>}
             {value === "doctor" && <Doctor />}
             {value === "patient" && <Patients />}
             {value === "department" && <Department />}

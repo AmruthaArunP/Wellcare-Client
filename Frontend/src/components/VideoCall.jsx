@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { BsFillTelephoneFill, BsFillTelephoneXFill, BsMicFill, BsMicMuteFill } from 'react-icons/bs'
 import PropTypes from 'prop-types'
 import axios from '../services/axiosInterceptor.js'
+import doctorAxios from '../services/doctorAxiosInterceptor.js'
 
 
 function VideoCall({value}) {
@@ -17,62 +18,63 @@ function VideoCall({value}) {
     const [remoteSocketId, setRemoteSocketId] = useState(null)
     const [callActive, setCallActive] = useState(false)
     const [myStream, setMyStream] = useState(null)
-    const [remoteStream, setRemoteStream] = useState()
+    const [remoteStream, setRemoteStream] = useState(null)
     const [muted, setMuted] = useState(true)
     const [accepted, setAccepted] = useState(false)
+    const [btnDisplay, setBtnDisplay] = useState(false)
     const docToken = localStorage.getItem('doctorToken')
     const appoint = useSelector(state => state.consult.slot)
 
 
     const handleUserJoined = useCallback(({ email, id }) => {
-      console.log(`${email} joined`);
+      console.log(`Videocall: ${email} joined`);
+      console.log(`Videocall: id  is :`,id);
       setRemoteSocketId(id)
     }, [])
 
       const handleCallUser = useCallback(async () => {
         console.log("handleCallUser -> call active value in user:", callActive);
+        if (!socket) {
+          // Reconnect or handle the situation appropriately
+          console.error('Socket connection not available.');
+          return;
+      }
+
         if (callActive) {
-        console.log("handleCallUser -> call active Entered");
-        myStream.getTracks().forEach((track) => track.stop());
+          console.log("handleCallUser -> DISCONNECTING called for remoteSocketId: ", remoteSocketId);
+          socket.emit('call:end', { roomId: remoteSocketId })
+          myStream.getTracks().forEach((track) => track.stop());
           setMyStream(null);
-          socket.emit('call:end', { to: remoteSocketId })
           setCallActive(false)
-          setRemoteStream('')
-          if(value === 'doctor'){
-            console.log("handleCallUser -> slot:",appoint);
-            console.log("handleCallUser -> docToken:",docToken);
+          setRemoteStream(null)
+
+         
+          console.log("handleCallUser -> appoint slot:", appoint, "docToken:", docToken);
               if (appoint) {
                 console.log("token before sending to back :",docToken);
-                await axios.patch(`doctor/doctorEndAppointment/${appoint}`,{}, {
-                  headers: {
-                    Authorization: `Bearer ${docToken}`
-                  }
-                }).then(res => {
+                await doctorAxios.patch(`doctor/doctorEndAppointment/${appoint}`,{})
+                .then(res => {
                   console.log(res.data);
                 })
               }
-          }
-
-
-          console.log("handleCallUser -> remoteSocketId:", remoteSocketId);
-          console.log("handleCallUser -> socket:", socket);
-
+          
+          console.log("handleCallUser -> DISCONNECTING: remoteSocketId:", remoteSocketId, "socket:", socket);
 
           socket.emit('socket:disconnect', { socketId: remoteSocketId });
-
-          
+         
           if (value === 'doctor') {
             navigate('/doctor-success')
           } else if (value === "user") {
             navigate('/feedback')
           }
     
-        } else {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-          const offer = await peer.getOffer()
-          socket.emit('user:call', { to: remoteSocketId, offer })
-          setMyStream(stream)
-          setCallActive(true)
+        } 
+        else {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+            const offer = await peer.getOffer()
+            socket.emit('user:call', { to: remoteSocketId, offer })
+            setMyStream(stream)
+            setCallActive(true)
         }
       }, [appoint, callActive, docToken, myStream, navigate, remoteSocketId, socket, value])
 
@@ -179,7 +181,7 @@ function VideoCall({value}) {
     </div>
 
     <br />
-    {callActive && (
+    {callActive &&  ( 
       <button className='btn bg-red-500 text-white mt-4 border-2 px-4 py-2 rounded ' onClick={handleCallUser}>Cancel call</button>
     )}
     {myStream && (
@@ -194,7 +196,7 @@ function VideoCall({value}) {
       </button>
     )}
     {!callActive && value === 'doctor' && remoteSocketId && (
-      <button className='btn btn-outline-success mt-4' onClick={handleCallUser}>Call</button>
+      <button className=' bg-green-600 mt-4 border-2 px-2 py-2 rounded' onClick={handleCallUser}>Call</button>
     )}
   </div>
 </div>

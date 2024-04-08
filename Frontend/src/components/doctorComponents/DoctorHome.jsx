@@ -1,83 +1,67 @@
-import React, { useEffect, useState } from 'react'
-import { useSocket } from '../../context/socket/socketProvider.jsx'
-import Swal from 'sweetalert2';
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState ,useEffect } from 'react'
 import doctorAxios from '../../services/doctorAxiosInterceptor.js'
-import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
+import BarChart from '../BarChart.jsx';
+import { BiRupee } from "react-icons/bi"
+import { FaIdCard } from "react-icons/fa"
 
 
 
 function DoctorHome() {
 
-  const socket = useSocket();
-
-  const [income, setIncome] = useState('')
+  const [income,setIncome ] = useState('');
   const [patients, setPatients] = useState('')
-  const [docAppoint, setDocAppoint] = useState([])
-  const [docId, setDocId] = useState(null);
-  const navigate = useNavigate()
   const doctorToken = localStorage.getItem('doctorToken')
-
-
+  const [docAppoint, setDocAppoint] = useState([])
+  const navigate = useNavigate()
+  
   useEffect(() => {
-    console.log('effect is working');
-
-    socket.on('user-requested', (user, roomId) => {
-      
-      console.log("DoctorHome ====>   room is",user,roomId);
-      Swal.fire({
-        title: 'Chat Request',
-        text: `${user.userName} Requested a chat , Do you want to join ?`,
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'Cancel',
-      }).then((result) => {
-
-        if (result.isConfirmed) {
-          socket.emit('join-chat', roomId)
-          console.log(user.userName);
-          const handleRoomJoin = () => {
-         
-            navigate(`/doctor-chat/${user._id}`)
-          }
-          socket.on('chat-connected', handleRoomJoin);
-        } else {
-          socket.emit('doc-rejected', user._id)
-        }
-      });
-    })
-  },[socket])
-
-  useEffect(() => {
-
-    if (doctorToken) {
-
-      const getSchedule = async () => {
-
-        try {
-          console.log(11);
-        
-          const response =  await doctorAxios.get('doctor/schedule-data')
-          if (response.status === 200 && response.data.schedule.length > 0) {
-            console.log("backend data : ******",response.data.schedule[0].doctor);
-            setDocId(response.data.schedule[0].doctor);
-            socket.emit('set-up', response.data.schedule[0].doctor)
-          }
-          
-        } catch (error) {
-          console.log(error);
+    try {
+      const dataCall = async () => {
+        const response = await doctorAxios.get('doctor/dashboard')
+        if(response.data){
+          console.log("response getting in dash board:",response.data);
+          setDocAppoint(response.data)
+          const inc = response.data.reduce((acc, occ) => {
+            return acc = acc + occ.amount
+          }, 0)
+          console.log("doctor income:",inc);
+          setIncome(inc)
+          setPatients(response.data.length)
         }
       }
-      getSchedule()
+      dataCall()
+    } catch (error) {
+      console.log("error in dashboard:",error);
     }
-  }, [doctorToken,socket])
+  },[doctorToken])
 
 
   return (
     <>
-    <h3>this id home page</h3>
+    <div>
+    <div className="flex flex-wrap justify-center">
+    <div className="w-full lg:w-1/2">
+        <div className="dataButton m-4 border shadow-lg p-4 ">
+            <h5 className="flex items-center text-2xl font-bold text-teal-500"><BiRupee className="mr-2 " /> Total Income</h5>
+            <h4 className='text-2xl font-bold text-teal-500'>{income && income}</h4>
+        </div>
+    </div>
+    <div className="w-full lg:w-1/2">
+        <div className="dataButton m-4 border shadow-lg p-4">
+            <h5 className="flex items-center text-2xl font-bold text-teal-500"><FaIdCard className="mr-2" /> Total appointments</h5>
+            <h4 className='text-2xl font-bold text-teal-500'>{patients && patients}</h4>
+        </div>
+    </div>
+</div>
+
+<BarChart appoints={docAppoint} />
+        {/* <div style={{paddingLeft:'40px'}}> Download Sales Report <DownloadButton patients={patients.toString()} income={income.toString()} Appointment={docAppoint} /></div> */}
+
+    </div>
+
     </>
+
   )
 }
 

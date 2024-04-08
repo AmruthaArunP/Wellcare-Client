@@ -8,7 +8,7 @@ function LoginPage({ value }) {
   return (
     <div>
       {value === "doctor" ? <NavbarDoctor /> : <NavbarUser />}
-      {value === "doctor" ? <Login value={"doctor"} /> : <Login />}
+      {value === "doctor" ? <Login value = {"doctor"} /> : <Login />}
 
       <Footer />
     </div>

@@ -14,7 +14,7 @@ function UserAppoinment() {
   const socket = useSocket()
   const navigate = useNavigate()
   const [userData, setUserData] = useState(null);
-  const email = useSelector(state => state.user.data.email)
+  const email = localStorage.getItem('userEmail')
   console.log('email is:', email);
   const dispatch = useDispatch()
 
@@ -77,37 +77,42 @@ function UserAppoinment() {
   // Join meeting
   const handleJoin = useCallback((roomId) => {
 
-    console.log('handleJoin -> roomId:',roomId );
-    console.log('handleJoin -> email:',email );
-    
-    const room = roomId
-    console.log('handleJoin -> room:',room );
+    console.log('PATIENT: handleJoin -> roomId: ', roomId, ', email: ',email );
 
+    const room = roomId
+    console.log('PATIENT: handleJoin -> socket: ', socket );
 
     //socket.emit('socket:connect', { socketId: remoteSocketId });
-    //socket.connect();
+    if(!socket.connected) {
+        //socket.on('room:join', handleJoinRoom)
 
-
-    socket.emit("room:join", { email, room })
+        socket.connect(roomId);
+        if(!socket.connected) {
+          socket.connect(roomId);
+          console.log('PATIENT: handleJoin -> socket after connect on trial 2: ', socket );
+        }
+        else{
+          console.log('PATIENT: handleJoin -> socket after connect on trial 1: ', socket );
+        }
+    }
+    //socket.on('room:join', handleJoinRoom)
+    socket.emit('room:join', { email, room });
 }, [socket, email])
 
 const handleJoinRoom = useCallback((data) => {
-  console.log('handleJoinRoom entered' );
-  console.log(data);
-  const { room } = data
-  console.log('handleJoinRoom before navigate' );
-  navigate(`/call/${room}`)
+  console.log("PATIENT: handleJoinRoom => entered with data: ", data );  
+  const room  = data.room
+  //console.log('handleJoinRoom before navigate' );
+  // navigate(`/call/${room}`)
+  navigate(`/user-call/${room}`)
 }, [navigate])
 
 useEffect(() => {
-  console.log('useEffect before calling handleJoinRoom' );
-
+  console.log('PATIENT: useEffect =>  before calling room:join with handleJoinRoom' );
   socket.on('room:join', handleJoinRoom)
-  console.log('useEffect after calling handleJoinRoom' );
 
   return () => {
-  console.log('useEffect return called ' );
-
+      console.log('useEffect return called ' );
       socket.off('room:join', handleJoinRoom)
   }
 }, [socket, handleJoinRoom])

@@ -10,8 +10,7 @@ function UserChatPage() {
 
   return (
         <div>
-        <h1>user chat page</h1>
-        <div className="chat">
+              <div className="chat">
           <ChatBar />
           <div className="chat__main">
             <ChatBody role={"user"} chatId= {chatId} doctorId={doctorId} />

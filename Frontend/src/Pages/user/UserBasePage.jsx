@@ -12,11 +12,11 @@ function UserBasePage({ value }) {
           <UserSideBar />
         </div>
         <div className="w-full lg:w-4/5 max-h-screen px-4 py-4 flex flex-col">
-          <div className="flex-grow border rounded-lg shadow-lg p-10 overflow-y-auto">
+          
             {value === "userProfile" && <UserProfile />}
             {value === "userAppoinment" && <UserAppoinment />}
             {value === "userPrescription" && <UserPrescriptions />}
-          </div>
+          
         </div>
       </div>
     </>

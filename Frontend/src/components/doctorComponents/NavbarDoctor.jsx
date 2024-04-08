@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React ,{useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../context/hooks/useAuth";
 import { setDoctorData } from "../../redux/doctorData";
 
-function NavbarDoctor({value}) {
+function NavbarDoctor() {
 
   const { doctor,setDoctor } = useAuth();
   const dispatch = useDispatch();
@@ -14,12 +14,20 @@ function NavbarDoctor({value}) {
 
   const handleLogout = () => {
       localStorage.removeItem("doctorToken");
+      localStorage.removeItem("doctorEmail");
       dispatch(setDoctorData({}));
+      // console.log("navbar-before-handleLogout - ",doctor);
       setDoctor(false);
-      localStorage.removeItem("doctor")
-      navigate("/");
+      console.log("navbar-after-handleLogout - ",doctor);
+      navigate("/doctor-login");
   };
 
+  // useEffect(() => {
+  //   if (!doctor) {
+  //     console.log("UseEffect - navbar-after-handleLogout - ",doctor);
+  //     navigate("/doctor-login");
+  //   }
+  // }, [doctor, navigate]);
 
 
   return (
@@ -63,7 +71,7 @@ function NavbarDoctor({value}) {
         ) : (
           <Link to="/login">
             <button className="bg-white p-4 mx-4 my-6 rounded border border-black hover:bg-black hover:text-white duration-500"
-            onClick={handleLogout}>
+            >
               LOGIN / SIGN UP
             </button>
           </Link>

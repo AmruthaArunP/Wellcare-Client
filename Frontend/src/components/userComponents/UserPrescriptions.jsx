@@ -31,7 +31,7 @@ function Prescription() {
   }, [dataCall]);
 
   return (
-    <div className="appoints text-center p-3 m-5   mx-auto">
+    <div className="text-center p-3 m-5 border rounded-lg shadow-lg ">
       <h2 className="text-center text-4xl text-teal-600 font-bold mb-4 underline">Prescriptions</h2>
       {prescriptions.length !== 0 && prescriptions.map((el, index) => (
         <div key={index} className="bg-white rounded-lg shadow-lg mb-4">

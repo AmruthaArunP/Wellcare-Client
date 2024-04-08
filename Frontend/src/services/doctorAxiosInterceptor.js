@@ -5,7 +5,7 @@ const doctorAxios  = axios.create({
   timeout: 2000,
 });
 
-doctorAxios .interceptors.request.use(
+doctorAxios.interceptors.request.use(
   (config) => {
     const doctorToken = localStorage.getItem('doctorToken')
     if (doctorToken) {

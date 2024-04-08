@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import useAuth from "../../context/hooks/useAuth";
 import { setUserdata } from "../../redux/userData";
 
 
-function NavbarUser({value}) {
+function NavbarUser() {
 
    const { user,setUser } = useAuth()
   const dispatch = useDispatch();
@@ -16,9 +16,10 @@ function NavbarUser({value}) {
   const handleLogout = () => {
 
       localStorage.removeItem("userToken");
+      localStorage.removeItem("userEmail");
       dispatch(setUserdata({}));
       setUser(false);
-      navigate("/");
+      navigate("/login");
     
   };
 
@@ -76,7 +77,7 @@ function NavbarUser({value}) {
         ) : (
           <Link to="/login">
             <button className="bg-white p-4 mx-4 my-6 rounded border border-black hover:bg-black hover:text-white duration-500"
-            onClick={handleLogout}>
+            >
               LOGIN / SIGN UP
             </button>
           </Link>

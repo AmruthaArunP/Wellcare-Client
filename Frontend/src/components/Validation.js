@@ -10,8 +10,8 @@ export const validateMobileNumber = (mobile) => {
 
 export const validatePassword = (password) =>{
          // At least 8 characters, at least one uppercase letter, one lowercase letter, one number, and one special character
-        const regex = /^([1-9])$/;
-        //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        // const regex = /^([1-9])$/;
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return regex.test(password);
            
 }
@@ -21,3 +21,10 @@ export const validateCapitalLetter = (input) => {
     var regex = /^[A-Z]$/;
     return regex.test(firstCharacter);
   };
+
+
+export const isValidMedicine = (medicine) => {
+    // Regular expression to match at least one alphanumeric character or special character
+    const regex = /[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    return regex.test(medicine);
+};  

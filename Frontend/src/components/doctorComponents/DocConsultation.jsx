@@ -13,8 +13,8 @@ function DocConsultation() {
   const socket = useSocket();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const email = useSelector((state) => state.doctor.data.email);
-  console.log("dr email is:", email);
+  const email = localStorage.getItem('doctorEmail')
+  console.log("DocConsultation => INIT => dr email is:", email);
 
   useEffect(() => {
     const datacall = async () => {
@@ -22,11 +22,19 @@ function DocConsultation() {
         const appointData = await doctorAxios.get("doctor/consult");
 
         if (appointData.data) {
+          const sortedAppointments = appointData.data.sort((a, b) => {
+            // Convert dates to Date objects for comparison
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            
+            // Compare dates
+            return dateB - dateA;
+          });
           // Filter and update the consult data to include the "expired" status
-          const updatedConsult = appointData.data.map((el) => {
+          const updatedConsult = sortedAppointments.map((el) => {
             const date = new Date();
             const formattedDate = format(date, "dd-MM-yyyy");
-            console.log(formattedDate);
+            //console.log(formattedDate);
             // Format the time
             const hours = date.getHours();
             const minutes = date.getMinutes();
@@ -40,12 +48,7 @@ function DocConsultation() {
 
             const currentTime = `${formattedHours}.${formattedMinutes} ${period}`;
             // Compare the indices to check if the appointment has already passed
-            console.log(el.date);
-            console.log(formattedDate);
             const isExpired = formattedDate >= el.date && el.time < currentTime;
-
-            console.log("Current Time:", currentTime);
-            console.log("app Time:", el.time);
 
             // Return the updated element with the "isExpired" status
             return {
@@ -53,7 +56,7 @@ function DocConsultation() {
               isExpired: isExpired,
             };
           });
-          console.log("consultation :", appointData.data);
+          //console.log("consultation :", appointData.data);
           setConsult(updatedConsult);
         }
       } catch (error) {
@@ -65,33 +68,39 @@ function DocConsultation() {
 
   const handlePrescribe = useCallback(
     (el) => {
-      console.log("element to oriscription*****:", el);
+      //console.log("element to prescription*****:", el);
       dispatch(setData(el));
       navigate("/doctor-prscription");
     },
     [dispatch, navigate]
   );
 
-  const handleJoin = useCallback(
-    (id, room) => {
-      dispatch(setSlot(id));
-      console.log("room is :", room);
+  const handleJoin = useCallback((id, room) => {
+      console.log("DR handleJoin => room is :", room, ", email: ", email);
+      console.log('DR handleJoin => socket: ', socket );
+
+      if(!socket.connected) {
+          //socket.on("room:join", handleJoinRoom);
+          socket.connect(room);
+          console.log('DR handleJoin => socket after connect: ', socket );
+      }
       socket.emit("room:join", { email, room });
+      dispatch(setSlot(id));
     },
-    [dispatch, socket, email]
+    [dispatch,email]
   );
 
-  const handleJoinRoom = useCallback(
-    (data) => {
-      const { room } = data;
-      console.log("data:", data);
-      navigate(`/doctor-call/${room}`);
-    },
-    [navigate]
+  const handleJoinRoom = useCallback((data) => {
+      const room  = data.room;
+      console.log("DR handleJoinRoom => entered with data: ", data );  
+
+      // navigate(`/doctor-call/${room}`);
+      navigate(`/doctor-new-call/${room}`);
+    },[navigate]
   );
 
   useEffect(() => {
-    console.log("data reached startng of useEffect");
+    console.log("useEffect DR => data reached startng of useEffect");
     socket.on("room:join", handleJoinRoom);
     return () => {
       socket.off("room:join", handleJoinRoom);

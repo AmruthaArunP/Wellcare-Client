@@ -11,7 +11,7 @@ function DoctorChatPage() {
 
   return (
     <div>
-      <h1>doctor chat page</h1>
+      
       <div className="chat">
         <ChatBar />
         <div className="chat__main">

@@ -42,6 +42,7 @@ function DocSchedule() {
     const dataCall = async () => {
       const response = await doctorAxios.get('doctor/getSchedule')
       if(response.data){
+        const currentDate = new Date();
         console.log('getting:', response.data);
         dispatch(setScheduleData(response.data))
       }

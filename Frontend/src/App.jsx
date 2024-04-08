@@ -31,6 +31,7 @@ import DoctorsInSpecialityPage from './Pages/home/DoctorsInSpecialityPage';
 import RequireAdmin from './context/auth/RequireAdmin';
 import DoctorChatPage from './Pages/doctor/DoctorChatPage';
 import UserChatPage from './Pages/user/UserChatPage';
+import UserVideoCall from './components/userComponents/UserVideoCall';
 
 
 
@@ -70,6 +71,8 @@ function App() {
             <Route path='/call/:room' element={<VideoCall value={'user'}/>} />
             <Route path='/feedback' element={<FeedbackPage />} />
             <Route path='/chat' element={<UserChatPage/>} />
+            {/* <Route path='/user-call/:room' element={<UserVideoCall value={'user'}/>} /> */}
+            <Route path='/user-call/:room' element={<VideoCall value={'user'}/>} />
 
             </Route>
 
@@ -96,6 +99,9 @@ function App() {
             <Route path='/doctor-call/:room' element={<VideoCall value={'doctor'} /> }/>
             <Route path='/doctor-success' element={<DocSuccessPage/>} />
             <Route path="/doctor-chat" element={<DoctorChatPage />} />
+            {/* <Route path='/doctor-new-call/:room' element={<UserVideoCall value={'doctor'} /> }/> */}
+            <Route path='/doctor-new-call/:room' element={<VideoCall value={'doctor'} /> }/>
+
 
           </Route>
 

@@ -1,11 +1,10 @@
 import React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import useAuth from '../hooks/useAuth';
 
 function RequireDoctor() {
 
-    const {doctor} = useAuth()
+    const { doctor } = useAuth()
     
     const location = useLocation();
 
@@ -13,3 +12,4 @@ function RequireDoctor() {
 }
 
 export default RequireDoctor
+

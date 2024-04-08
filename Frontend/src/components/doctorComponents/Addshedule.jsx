@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { setScheduleData } from "../../redux/doctorSchedule.js";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { format } from 'date-fns';
+import { format,addDays  } from 'date-fns';
 
 
 
@@ -133,7 +133,7 @@ function Addshedule() {
               selected={freeDate}
               onChange={(date) => setFreeDate(date)}
               dateFormat="yyyy-MM-dd"
-              minDate={new Date()}
+              minDate={addDays(new Date(), 1)}
               className="border-2 rounded p-2 text-teal-500"
             />
           </div>

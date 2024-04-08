@@ -16,6 +16,7 @@ function CreatePrescription() {
     const [mor, setMor] = useState(false);
     const [aft, setAft] = useState(false);
     const [evg, setEvg] = useState(false);
+    const [err, setErr] = useState('')
 
     useEffect(() => {
         if (!userData.userData) {
@@ -57,6 +58,23 @@ function CreatePrescription() {
             med = med + '-' + '0';
         }
 
+        const isValidMedicine = (medicine) => {
+            // Regular expression to match at least one alphanumeric character or special character
+            const regex = /[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+            return regex.test(medicine);
+        };
+
+        if (!isValidMedicine(selectedMedicine)) {
+            setErr('Please enter a valid medicine');
+            return; // Added return to stop execution if validation fails
+        }
+
+
+
+        if(!selectedMedicine || !dose){
+            setErr('pleace enter details')
+        }
+
         if (selectedMedicine && dose) {
             setMedDetails(prev => {
                 const updated = new Map(prev);
@@ -84,8 +102,13 @@ function CreatePrescription() {
                         <p>{userData?.issues}</p>
                     </div>
                 </div>
+                {err === 'Please enter a valid medicine' && <span className='text-red-500'>{err}</span>}
+                {err === 'pleace enter details' && <span className='text-red-500'>{err}</span>}
+
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-4 bg-gray-100 p-4 rounded-lg">
+                
     <div className="col-span-1">
+        
         <input
             type="text"
             placeholder="Medicine"

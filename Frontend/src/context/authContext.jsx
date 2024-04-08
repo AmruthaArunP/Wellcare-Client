@@ -23,6 +23,7 @@ function AuthProvider ({ children }) {
 
     useEffect(() => {
         localStorage.setItem('doctor', JSON.stringify(doctor));
+        console.log('doctor state from auth provider:',doctor);
     }, [doctor]);
 
     useEffect(() => {
