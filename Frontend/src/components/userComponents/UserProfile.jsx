@@ -53,7 +53,7 @@ function UserProfile() {
           <div className="w-full md:w-1/2  bg-red-200 rounded-md overflow-hidden shadow-md">
             {user[0].image ? (
               <img
-                src={`http://localhost:8000/images/${user[0].image}`}
+                src={`${import.meta.env.VITE_BASE_URL}images/${user[0].image}`}
                 alt="Doctor"
                 className="w-full h-full object-cover"
               />
@@ -90,7 +90,7 @@ function UserProfile() {
                 user[0].documents.map((document, index) => (
                   <div key={index} className="mt-2">
                     <img
-                      src={`http://localhost:8000/images/${document}`}
+                      src={`${import.meta.env.VITE_BASE_URL}images/${document}`}
                       alt={`Document ${index}`}
                       className="w-32 h-32 inline-block mr-2"
                     />

@@ -165,7 +165,7 @@ function ViewDetails({ user, setSelected, value }) {
             {user.image ? (
               <div className="">
                 <img
-                  src={`http://localhost:8000/images/${user.image}`}
+                  src={`${import.meta.env.VITE_BASE_URL}images/${user.image}`}
                   alt="User"
                   className="w-32 h-32 rounded"
                 />
@@ -245,7 +245,7 @@ function ViewDetails({ user, setSelected, value }) {
                   <div key={index} className="flex flex-col w-32 h-50">
                     <img
                       className="w-32 h-32"
-                      src={`http://localhost:8000/images/${user.documents}`}
+                      src={`${import.meta.env.VITE_BASE_URL}images/${user.documents}`}
                       alt=""
                     />
                     <br />

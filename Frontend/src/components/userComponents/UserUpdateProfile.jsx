@@ -138,7 +138,7 @@ function UserUpdateProfile() {
               <img src={preview} alt="" className="w-32 h-32" />
             ) : profile ? (
               <img
-                src={`http://localhost:8000/images/${profile}`}
+                src={`${import.meta.env.VITE_BASE_URL}images/${profile}`}
                 alt="Profile"
                 className="w-32 h-32"
               />
@@ -266,7 +266,7 @@ function UserUpdateProfile() {
                       <div key={index} className="flex flex-col">
                         <img
                           className="w-32 h-32"
-                          src={`http://localhost:8000/images/${doc}`}
+                          src={`${import.meta.env.VITE_BASE_URL}images/${doc}`}
                           alt=""
                         />
                         <button

@@ -62,7 +62,7 @@ function DocProfile() {
         <div className="flex flex-col md:flex-row gap-6 mt-8">
           <div className="w-full md:w-1/2">
             <img
-              src={`https://wellcarehealth.online/images/${doctorData[0].image}`}
+              src={`${import.meta.env.VITE_BASE_URL}images/${doctorData[0].image}`}
               alt="Doctor"
               className="w-full h-auto rounded-lg shadow-lg"
             />
@@ -102,7 +102,7 @@ function DocProfile() {
                   doctorData[0].documents.map((document, index) => (
                     <div key={index} className="mr-2 mb-2">
                       <img
-                        src={`https://wellcarehealth.online/images/${document}`}
+                        src={`${import.meta.env.VITE_BASE_URL}images/${document}`}
                         alt={`Document ${index}`}
                         className="w-24 h-24 rounded-lg shadow-md"
                       />
