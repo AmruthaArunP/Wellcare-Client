@@ -102,7 +102,7 @@ function DocProfile() {
                   doctorData[0].documents.map((document, index) => (
                     <div key={index} className="mr-2 mb-2">
                       <img
-                        src={`http://localhost:8000/images/${document}`}
+                        src={`https://wellcarehealth.online/images/${document}`}
                         alt={`Document ${index}`}
                         className="w-24 h-24 rounded-lg shadow-md"
                       />
