@@ -10,11 +10,20 @@ import { format } from "date-fns";
 function DocConsultation() {
   const doctorToken = localStorage.getItem("doctorToken");
   const [consult, setConsult] = useState([]);
+  const [ chat,setChat] = useState(false);
   const socket = useSocket();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = localStorage.getItem('doctorEmail')
   console.log("DocConsultation => INIT => dr email is:", email);
+
+
+  useEffect(() => {
+    socket.on("SentUpdatedMessage", (updatedMessage) => {
+      console.log("updatedMessage", updatedMessage)
+      setChat(true);
+    });
+  },[socket])
 
   useEffect(() => {
     const datacall = async () => {
@@ -155,7 +164,7 @@ const handleChat = (appoinmentId, userId) => {
                           className=" bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2"
                           onClick={() => handleChat(el._id , el.user )}
                         >
-                          Chat
+                          Chat {chat && <span className="text-white bg-red-600  border rounded">1</span>}
                         </button>
 
                       </div>

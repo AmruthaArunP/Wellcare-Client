@@ -10,6 +10,7 @@ function UserAppoinment() {
 
   const [appointments, setAppointments] = useState('');
   const [errorMsg, setErrorMsg] = useState('')
+  const [ chat,setChat] = useState(false);
   const userToken = localStorage.getItem('userToken')
   const socket = useSocket()
   const navigate = useNavigate()
@@ -54,6 +55,14 @@ function UserAppoinment() {
     setAppointments(updatedArray)
     }
   }, [appointments, userToken])
+
+
+  useEffect(() => {
+    socket.on("SentUpdatedMessage", (updatedMessage) => {
+      console.log("updatedMessage", updatedMessage)
+      setChat(true);
+    });
+  },[socket])
 
 
   useEffect(() => {
@@ -177,7 +186,7 @@ const handleChat = (appoinmentId, docterId) => {
                     <>
                       <button  className="btn bg-red-500 text-white px-3 py-1 text-sm rounded-md mr-2" onClick={() => handleCancelAppointment(el._id)}>Cancel</button>
                       <button  className="btn bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2" onClick={()=> handleJoin(el._id + el.user)}>Join</button>
-                      <button className="btn bg-green-500 text-white px-3 py-1 text-sm rounded-md" onClick={() => handleChat(el._id ,el.doctor)}>Chat</button>
+                      <button className="btn bg-green-500 text-white px-3 py-1 text-sm rounded-md" onClick={() => handleChat(el._id ,el.doctor)}>Chat {chat && <span className="text-white bg-red-600  border rounded">1</span>}</button>
                     </>
                   ) : (
                     <p className="text-sm text-red-500">Cancelled</p>
