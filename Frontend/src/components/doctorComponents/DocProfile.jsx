@@ -39,7 +39,7 @@ function DocProfile() {
       {doctorData && (
         <div className="flex flex-col items-center justify-center mt-8">
           <p className="text-center  text-teal-600 font-bold mb-4 ">
-            <span className='text-4xl'>Doctor Profile -{' '}</span>
+            <span className='text-3xl md:text-4xl'>Doctor Profile -{' '}</span>
             {doctorData[0]?.isApproved === 'approved' ? (
               <span className="text-green-600 text-2xl ">Approved </span>
             ) : doctorData[0]?.isApproved === 'rejected' ? (

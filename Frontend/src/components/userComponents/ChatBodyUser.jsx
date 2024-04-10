@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../services/axiosInterceptor.js';
 import { FaImage } from "react-icons/fa";
+import './chatCSS.css'
 
 function ChatBodyUser(props) {
   const navigate = useNavigate();

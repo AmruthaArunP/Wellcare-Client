@@ -1,9 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../../components/home/Footer";
 import DoctorBasePage from "./DoctorBasePage";
 import NavbarDoctor from "../../components/doctorComponents/NavbarDoctor";
+import { useSocket } from "../../context/socket/socketProvider";
 
 function DoctorHomePage({ data }) {
+
+  const socket = useSocket()
+  const [ chat,setChat] = useState(false);
+
   return (
     <>
       <div className="">

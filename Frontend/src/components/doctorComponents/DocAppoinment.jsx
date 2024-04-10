@@ -65,7 +65,7 @@ function DocAppoinment() {
 
   return (
     <div className=''>
-      <h2 className="text-center text-4xl text-teal-600 font-bold mb-4  ">Appoinments</h2>
+      <h2 className="text-center text-3xl md:text-4xl text-teal-600 font-bold mb-4  ">Appoinments</h2>
       <br />
           <div className="search-area mb-2 ">
             <input
