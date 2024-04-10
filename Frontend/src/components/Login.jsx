@@ -160,14 +160,14 @@ function Login({ value }) {
   return (
     <>
       <div className="bg-teal-100 m-16 max-w-screen-md border-4 mx-auto flex items-center justify-center rounded-md shadow-xl ">
-        <div className="w-1/2">
+        <div className="hidden sm:block sm:w-0 md:w-1/2">
           <img
             src={banerimage}
             alt="Login Image"
-            className=" object-cover rounded-full"
+            className=" object-cover rounded-full "
           />
         </div>
-        <div className=" w-1/2 p-6   items-center">
+        <div className="w-full md:w-1/2 p-6 items-center">
           <div className="flex-grow">
             <h2 className="text-center text-3xl font-semibold text-gray-800 mb-6">
               {value === "doctor" ? "Doctor Login" : "User Login"}

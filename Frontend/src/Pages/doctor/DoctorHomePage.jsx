@@ -9,7 +9,7 @@ function DoctorHomePage({ data }) {
       <div className="">
         <NavbarDoctor />
         <div className="">
-          <div className="p-4 md:p-8">
+          <div className=" md:p-8">
                {data === 'home' && <DoctorBasePage value={'home'}/>}
                 {data === 'docProfile' && <DoctorBasePage value={'docProfile'}/> }
                 {data === 'docAppoinment' && <DoctorBasePage value={'docAppoinment'}/> }

@@ -20,7 +20,7 @@ function DoctorBasePage({ value }) {
           <DoctorSideBar />
         </div>
         <div className="w-full lg:w-4/5 px-4 py-4 flex flex-col">
-          <div className="flex-grow border rounded-lg shadow-lg p-10 overflow-y-auto">
+          <div className="flex-grow border rounded-lg shadow-lg sm:p-0 md:p-10 overflow-y-auto">
               {value === 'home' && <DoctorHome />}
               {value === 'docProfile' && <DocProfile/> }
               {value === 'docAppoinment' && <DocAppoinment/> }

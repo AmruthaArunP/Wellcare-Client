@@ -126,12 +126,12 @@ const handleChat = (appoinmentId, userId) => {
 
   return (
     <>
-      <div className="appoints text-center p-3 m-5 border rounded-lg shadow-lg bg-white">
-        <h2 className="text-center text-4xl text-teal-600 font-bold mb-4 underline">
+      <div className="appoints text-center sm:p-0 p-3 sm:m-0 m-5 border rounded-lg shadow-lg bg-white  ">
+        <h2 className="text-center text-3xl md:text-4xl text-teal-600 font-bold mb-4 underline ">
           Consult Page
         </h2>
         <br />
-        <div className="bg-white p-3">
+        <div className="bg-white p-1 md:p-3">
           {consult.length !== 0 ? (
             consult.map((el) => (
               <div
