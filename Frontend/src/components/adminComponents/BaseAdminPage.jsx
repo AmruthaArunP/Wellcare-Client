@@ -19,10 +19,10 @@ function BaseAdminPage({ value }) {
   return (
     <>
       <div className=" max-w-screen h-screen flex flex-wrap ">
-        <div className="w-full lg:w-1/5 max-h-screen text-center p-4 h-4/5">
+        <div className="w-full lg:w-1/5 text-center p-4 h-4/5">
           <AdminSideBar />
         </div>
-        <div className="w-full lg:w-4/5 max-h-screen px-4 py-4  ">
+        <div className="w-full lg:w-4/5 px-4 py-4  ">
           <div className="  border-4 rounded p-10 bg-slate-200">
             {value === 'dashboard' && <AdminDashboard/>}
             {value === "doctor" && <Doctor />}

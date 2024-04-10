@@ -38,7 +38,7 @@ function UserProfile() {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="flex flex-col items-center justify-center mt-8">
+      <div className="flex flex-col items-center justify-center mt-8 mx-auto">
         <p className="text-center text-4xl text-teal-600 font-bold mb-4 underline">
           User Profile -{' '}
           {user[0]?.isBlocked ? (
@@ -65,7 +65,7 @@ function UserProfile() {
               />
             )}
           </div>
-          <div className="w-full md:w-1/2 border-2 rounded-md px-8 py-6 shadow-md">
+          <div className="w-full md:w-1/2 border-2 sm:w-full rounded-md px-8 py-6 shadow-md">
             <div className="mb-4">
               <span className="font-bold text-xl">Name:</span> {user[0].userName}
             </div>
