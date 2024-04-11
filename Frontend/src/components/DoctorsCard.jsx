@@ -16,7 +16,6 @@ function DoctorsCard() {
   const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {
-    console.log("DoctorsCard => line 19 ");
     const fetchDoctors = async () => {
       try {
         const res = await axios.get(`findDoctors`);
@@ -28,7 +27,6 @@ function DoctorsCard() {
       } catch (error) {
         console.error(error);
       }
-      console.log("DoctorsCard => line 32 ");
 
     };
 
@@ -38,7 +36,6 @@ function DoctorsCard() {
 
 
   const handleSearch = useCallback(async (e) => {
-    console.log("DoctorsCard => line 41 ");
     e.preventDefault();
     if (!search) {
       await axios.get(`searchDoc/all`, {
@@ -48,14 +45,12 @@ function DoctorsCard() {
       })
     } else {
       if (depName) {
-        console.log("DoctorsCard => line 51 ");
         await axios.get(`searchDoc/${search}/${depName}`, {
         }).then(res => {
           console.log('search data response:', res.data);
           setFilteredData(res.data)
         })
       } else {
-        console.log("DoctorsCard => line 58 ");
         await axios.get(`searchDoc/${search}`, {
         }).then(res => {
           console.log('search data response:=>', res.data);
@@ -70,18 +65,15 @@ function DoctorsCard() {
 
 
   const handleCategory = (e) => {
-    console.log("DoctorsCard => line 73 ");
     const filtered = docData.filter(
       (doc) => doc.doctorData[0].name === e.target.value);
     setFilteredData(filtered);
     setCurrentPage(1);
     setDepName(e.target.value)
-    console.log("DoctorsCard => line 79 ");
     setIsSearch(true);
   };
 
   const handleClear = () => {
-    console.log("DoctorsCard => line 84 ");
     setSearch('');
     setFilteredData([]);
     setIsSearch(false);
