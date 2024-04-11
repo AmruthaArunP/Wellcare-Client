@@ -10,7 +10,7 @@ export const useSocket = () => {
 
 export const SocketProvider = (props) => {
 
-    const socket = useMemo(() => io(import.meta.env.VITE_SOCKET_ADDRESS), [])
+    const socket = useMemo(() => io('wellcarehealth.online'), [])
     return (
         <SocketContext.Provider value={socket} >
             {props.children}
