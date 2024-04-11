@@ -51,14 +51,14 @@ function VideoCall({ value }) {
       setRemoteStream(null);
 
       console.log("handleCallUser -> appoint slot:", appoint, "docToken:", docToken);
-      // if (appoint) {
-      //   console.log("token before sending to back :", docToken);
-      //   await doctorAxios
-      //     .patch(`doctor/doctorEndAppointment/${appoint}`, {})
-      //     .then((res) => {
-      //       console.log(res.data);
-      //     });
-      // }
+      if (appoint) {
+        console.log("token before sending to back :", docToken);
+        await doctorAxios
+          .patch(`doctor/doctorEndAppointment/${appoint}`, {})
+          .then((res) => {
+            console.log(res.data);
+          });
+      }
 
       console.log("handleCallUser -> DISCONNECTING: remoteSocketId:", remoteSocketId, "socket:", socket);
 
