@@ -10,20 +10,19 @@ import { format } from "date-fns";
 function DocConsultation() {
   const doctorToken = localStorage.getItem("doctorToken");
   const [consult, setConsult] = useState([]);
-  const [ chat,setChat] = useState(false);
+  const [chat, setChat] = useState(false);
   const socket = useSocket();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const email = localStorage.getItem('doctorEmail')
+  const email = localStorage.getItem("doctorEmail");
   console.log("DocConsultation => INIT => dr email is:", email);
-
 
   useEffect(() => {
     socket.on("SentUpdatedMessage", (updatedMessage) => {
-      console.log("updatedMessage", updatedMessage)
+      console.log("updatedMessage", updatedMessage);
       setChat(true);
     });
-  },[socket])
+  }, [socket]);
 
   useEffect(() => {
     const datacall = async () => {
@@ -35,7 +34,7 @@ function DocConsultation() {
             // Convert dates to Date objects for comparison
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
-            
+
             // Compare dates
             return dateB - dateA;
           });
@@ -84,45 +83,48 @@ function DocConsultation() {
     [dispatch, navigate]
   );
 
-  const handleJoin = useCallback((id, room) => {
+  const handleJoin = useCallback(
+    (id, room) => {
       console.log("DR handleJoin => room is :", room, ", email: ", email);
-      console.log('DR handleJoin => socket: ', socket );
+      console.log("DR handleJoin => socket: ", socket);
 
-      if(!socket.connected) {
-          //socket.on("room:join", handleJoinRoom);
-          socket.connect(room);
-          console.log('DR handleJoin => socket after connect: ', socket );
+      if (!socket.connected) {
+        //socket.on("room:join", handleJoinRoom);
+        socket.connect(room);
+        console.log("DR handleJoin => socket after connect: ", socket);
       }
       socket.emit("room:join", { email, room });
       dispatch(setSlot(id));
     },
-    [dispatch,email]
+    [dispatch, email]
   );
 
-  const handleJoinRoom = useCallback((data) => {
-      const room  = data.room;
-      console.log("DR handleJoinRoom => entered with data: ", data );  
+  const handleJoinRoom = useCallback(
+    (data) => {
+      const room = data.room;
+      console.log("DR handleJoinRoom => entered with data: ", data);
 
       // navigate(`/doctor-call/${room}`);
       navigate(`/doctor-new-call/${room}`);
-    },[navigate]
+    },
+    [navigate]
   );
 
   useEffect(() => {
-    console.log("useEffect DR => data reached startng of useEffect");
+    console.log("DR useEffect => data reached startng of useEffect");
     socket.on("room:join", handleJoinRoom);
     return () => {
-      socket.off("room:join", handleJoinRoom);
+      socket.off("DR useEffect return => room:join", handleJoinRoom);
     };
   }, [socket, handleJoinRoom]);
 
   //chat
 
-const handleChat = (appoinmentId, userId) => {
-  const appmtId = appoinmentId;
-  const usrId = userId;
-  navigate('/doctor-chat', { state : { appmtId, usrId}})
-}
+  const handleChat = (appoinmentId, userId) => {
+    const appmtId = appoinmentId;
+    const usrId = userId;
+    navigate("/doctor-chat", { state: { appmtId, usrId } });
+  };
 
   return (
     <>
@@ -153,23 +155,26 @@ const handleChat = (appoinmentId, userId) => {
                       <p className="text-sm">Attended</p>
                     ) : !el.isCancelled ? (
                       <>
-                      <div>
-                      <button
-                          className="btn bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2"
-                          onClick={() => handleJoin(el._id, el._id + el.user)}
-                        >
-                          Join
-                        </button>
-                        <button
-                          className=" bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2"
-                          onClick={() => handleChat(el._id , el.user )}
-                        >
-                          Chat {chat && <span className="text-white bg-red-600  border rounded">1</span>}
-                        </button>
+                        <div>
+                          <button
+                            className="btn bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2"
+                            onClick={() => handleJoin(el._id, el._id + el.user)}
+                          >
+                            Join
+                          </button>
+                          <button
+                            className=" bg-green-500 text-white px-3 py-1 text-sm rounded-md mr-2"
+                            onClick={() => handleChat(el._id, el.user)}
+                          >
+                            Chat{" "}
+                            {chat && (
+                              <span className="text-white bg-red-600  border rounded">
+                                1
+                              </span>
+                            )}
+                          </button>
+                        </div>
 
-                      </div>
-
-                        
                         <br />
                       </>
                     ) : (
@@ -177,7 +182,7 @@ const handleChat = (appoinmentId, userId) => {
                     )}
 
                     {!el.medicines ? (
-                      (!el.isCancelled && !el.isExpired && el.isAttended) ? (
+                      !el.isCancelled && !el.isExpired && el.isAttended ? (
                         <button
                           className="btn bg-teal-500 text-white px-3 py-1 text-sm rounded-md mr-2"
                           style={{ fontSize: "14px" }}

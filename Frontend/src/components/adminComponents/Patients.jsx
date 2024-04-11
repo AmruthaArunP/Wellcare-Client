@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import DataTables from './DataTables';
-import axios from '../../services/axiosInterceptor.js';
+import adminAxios from '../../services/adminAxiosInterceptor.js';
 import ViewDetails from './ViewDetails.jsx';
 
 function Patients() {
@@ -27,11 +27,7 @@ function Patients() {
 
   const fetchPatientData = async () => {
     try {
-      const response = await axios.get('admin/patients', {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
-      });
+      const response = await adminAxios.get('admin/patients',);
       setPatientData(response.data);
       setFilteredData(response.data);
     } catch (error) {
@@ -62,17 +58,12 @@ function Patients() {
     }
     if (result.isConfirmed) {
       try {
-        const response = await axios.patch(
+        const response = await adminAxios.patch(
           '/admin/managePatient',
           {
             status: row.isBlocked,
             id: row._id,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${adminToken}`,
-            },
-          }
         );
         if (response.data.message) {
           setPatientData((prevPatient) => {

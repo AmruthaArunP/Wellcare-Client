@@ -6,6 +6,7 @@ import Department from './Department'
 import useAuth from "../../context/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import AdminDashboard from "./AdminDashboard";
+import CreateDepartment from "./CreateDepartment";
 
 function BaseAdminPage({ value }) {
   const navigate = useNavigate()
@@ -28,6 +29,7 @@ function BaseAdminPage({ value }) {
             {value === "doctor" && <Doctor />}
             {value === "patient" && <Patients />}
             {value === "department" && <Department />}
+            {value === "createDep" && <CreateDepartment/>}
           </div>
         </div>
       </div>

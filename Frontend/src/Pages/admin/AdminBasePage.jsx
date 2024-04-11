@@ -12,6 +12,7 @@ function AdminBasePage({ data }) {
         {data === 'doctor' && <BaseAdminPage value={'doctor'} />}
         {data === 'patient' && <BaseAdminPage value={'patient'} />}
         {data === 'department' && <BaseAdminPage value={'department'} />}
+        {data === 'createDep' && <BaseAdminPage value={'createDep'} />}
       </div>
       
     </div>

@@ -4,36 +4,36 @@ import DoctorsList from "./DoctorsList";
 import Pagination from "./Pagination.jsx";
 import { AiOutlineSearch } from "react-icons/ai";
 
-function DoctorsCard() {
-
+function DoctorsCardNew() {
   const [docData, setDoctorsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [department, setDepartments] = useState([]);
-  const [depName, setDepName] = useState('')
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage] = useState(3);
+//   const [postPerPage] = useState(3);
   const [search, setSearch] = useState("");
   const [isSearch, setIsSearch] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const res = await axios.get(`findDoctors`);
+        const res = await axios.get(`findDoctors?page=${currentPage}`);
         console.log("department incoming data ====>",res.data.deps);
         console.log("doctors incoming data ====>",res.data.docs);
         setDoctorsData(res.data.docs);
         setDepartments(res.data.deps);
-        console.log("department names ===>",res.data.deps);
+        setTotalPages(Math.ceil(res.data.docs.length /4)); // Assuming 4 doctors per page
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchDoctors();
-  }, []);
+  }, [currentPage]);
 
 
- 
+
+
 const handleSearch = useCallback(async (e) => {
     e.preventDefault();
     if (!search) {
@@ -43,32 +43,18 @@ const handleSearch = useCallback(async (e) => {
             setFilteredData(res.data)
         })
     } else {
-        if(depName){
-            await axios.get(`searchDoc/${search}/${depName}`, {
-            }).then(res => {
-                console.log('search data response:',res.data);
-                setFilteredData(res.data)
-            })
-        }else{
-            await axios.get(`searchDoc/${search}`, {
-            }).then(res => {
-                console.log('search data response:',res.data);
-                setFilteredData(res.data)
-            })
-        }
-
+        await axios.get(`searchDoc/${search}`, {
+        }).then(res => {
+            setFilteredData(res.data)
+        })
     }
     setIsSearch(true);
-}, [search,department ])
-
-
+}, [search])
 
 const handleCategory = (e) => {
     const filtered = docData.filter(
         (doc) => doc.doctorData[0].name === e.target.value);
     setFilteredData(filtered);
-    setCurrentPage(1);
-    setDepName(e.target.value)
     setIsSearch(true);
 };
 
@@ -76,17 +62,16 @@ const handleClear = () => {
     setSearch('');
     setFilteredData([]);
     setIsSearch(false);
-    setDepName('')
 };
 
+const handleClickPrevious = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
   
-
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPost = filteredData.length
-  ? filteredData.slice(indexOfFirstPost, indexOfLastPost)
-  : docData.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleClickNext = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+  
 
   return (
     <>
@@ -102,19 +87,21 @@ const handleClear = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <button className="absolute right-0 top-0 h-full bg-black text-white rounded p-2">
+            <button className="absolute right-0 top-0 h-full bg-black text-white rounded p-2" onClick={handleSearch}>
               <AiOutlineSearch className="text-xl" />
             </button>
           </div>
         </form>
-        <div className="col-4 md:col-3 text-center px-12  flex justify-center ">
-  <div className="flex p-4 gap-4">
+        <div className="col-4 md:col-3 bg-gray-100 p-1 text-center bg-red-100">
+  <div className="border border-green-500 mt-5">
+    <h3 className="text-lg font-semibold">Departments</h3>
+    <h6 onClick={handleClear} className="cursor-pointer text-sm text-green-500">Clear</h6>
     <div className="text-left mx-auto" style={{ maxWidth: '300px' }}>
       <select 
-        className="border-b border-gray-300 py-2 px-2 bg-teal-500 rounded font-bold"
+        className="border-b border-gray-300 py-2 px-1"
         onChange={(e) => handleCategory(e)}
       >
-        <option value="">Select Specialities</option>
+        <option value="">Select Department</option>
         {department ? (
           department.map((dep) => (
             <option key={dep._id} value={dep.name}>{dep.name}</option>
@@ -124,9 +111,6 @@ const handleClear = () => {
         )}
       </select>
     </div>
-    <div className="border-b border-gray-300 py-2 px-2 bg-gray-200 rounded font-bold ">
-    <span onClick={handleClear} className="cursor-pointer text-sm text-green-500 ">Clear</span>
-    </div>
   </div>
 </div>
 
@@ -134,21 +118,37 @@ const handleClear = () => {
         {isSearch ? (
             <DoctorsList docData={filteredData} />
           ) : (
-            <DoctorsList docData={currentPost} />
+            <DoctorsList docData={docData} />
           )
         }
 
-        <Pagination
+        {/* <Pagination
           postPerPage={postPerPage}
           totalPosts={filteredData.length || docData.length}
           paginate={paginate}
-        />
+        /> */}
 
-
+<div className="flex justify-center py-5 px-20">
+    <button
+        className="border shadow-lg border-blue-500 px-4 py-2 rounded-md text-blue-500 mr-2"
+        onClick={handleClickPrevious}
+        disabled={currentPage === 1}
+    >
+        Previous
+    </button>
+    <span className="text-gray-700">{`Page ${currentPage} of ${totalPages}`}</span>
+    <button
+        className="border shadow-lg border-blue-500 px-4 py-2 rounded-md text-blue-500 ml-2"
+        onClick={handleClickNext}
+        disabled={currentPage === totalPages}
+    >
+        Next
+    </button>
+</div>
 
       </div>
     </>
   );
 }
 
-export default DoctorsCard;
+export default DoctorsCardNew;

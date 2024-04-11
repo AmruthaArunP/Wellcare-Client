@@ -31,7 +31,7 @@ import DoctorsInSpecialityPage from './Pages/home/DoctorsInSpecialityPage';
 import RequireAdmin from './context/auth/RequireAdmin';
 import DoctorChatPage from './Pages/doctor/DoctorChatPage';
 import UserChatPage from './Pages/user/UserChatPage';
-import UserVideoCall from './components/userComponents/UserVideoCall';
+// import UserVideoCall from './components/userComponents/UserVideoCall';
 
 
 
@@ -46,6 +46,7 @@ function App() {
           <Route path='/admin-doctors-details' element = {<AdminBasePage data = {'doctor'} />}/>
           <Route path='/admin-patient-details' element = {<AdminBasePage data = {'patient'}/>}/>
           <Route path='/department-details' element={<AdminBasePage data = {'department'}/>}/>
+          <Route path='/create-department' element={<AdminBasePage data = {'createDep'}/>}/>
           {/* </Route> */}
 
 

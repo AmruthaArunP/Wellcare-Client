@@ -13,11 +13,6 @@ function SpecialityList({specialityData}) {
             <img src={`${speciality.image}`} alt={speciality.name} className="w-full h-56 object-cover mb-4 rounded-md" />
             <h2 className="text-lg font-semibold text-teal-500 text-center">{speciality.name}</h2>
           </div>
-          <Link to={`/doctors-department/${speciality.name}`}>
-          <button className="bg-teal-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">
-            View Doctors
-          </button>
-          </Link>
 
         </div>
       ))

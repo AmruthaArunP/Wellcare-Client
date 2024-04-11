@@ -11,6 +11,8 @@ function DoctorsList({docData}) {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
+  console.log("doctor data in listing page ======>",docData);
+
   const handleCheck = async (e) => {
     console.log("doc data:", e);
     if(user){
@@ -35,9 +37,8 @@ function DoctorsList({docData}) {
         docData.map((doctor, index) => (
           <div key={index} className="bg-white p-4 rounded-lg shadow-md">
             <img src={`${import.meta.env.VITE_BASE_URL}images/${doctor.image}`} alt={doctor.name} className="w-full h-56 object-cover mb-4 rounded-md"  />
-            <h2 className="text-lg font-semibold">Dr.{doctor.name}</h2>
-            <p className="text-sm text-gray-600 mb-2">{doctor.qualification}</p>
-            <p className="text-sm text-gray-600 mb-2">{doctor.qualification}</p>
+            <h2 className="text-lg font-semibold">Dr.{doctor.name} <span className="text-sm text-gray-600 mb-2">- {doctor.qualification}</span></h2>
+            <p className="text-sm text-gray-600 mb-2">{doctor.doctorData[0].name}</p>
             <p className="text-sm text-gray-600 mb-2">Rs.{doctor.fee}</p>
             <button className="bg-teal-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md"
             onClick={() => handleCheck(doctor)}

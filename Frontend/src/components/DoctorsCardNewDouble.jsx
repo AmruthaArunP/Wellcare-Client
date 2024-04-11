@@ -4,7 +4,7 @@ import DoctorsList from "./DoctorsList";
 import Pagination from "./Pagination.jsx";
 import { AiOutlineSearch } from "react-icons/ai";
 
-function DoctorsCard() {
+function DoctorsCardNewDouble() {
 
   const [docData, setDoctorsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -62,6 +62,30 @@ const handleSearch = useCallback(async (e) => {
 }, [search,department ])
 
 
+// const handleSearch = useCallback(async (e) => {
+//     e.preventDefault();
+//     if (!search) {
+//         // If search query is empty
+//         if (!department) {
+//             // If no specialty is selected, search all doctors
+//             await axios.get(`searchDoc/all`, {}).then(res => {
+//                 setFilteredData(res.data);
+//             });
+//         } else {
+//             // If a specialty is selected, search only within that specialty
+//             await axios.get(`searchDoc/${department}/${search}`, {}).then(res => {
+//                 setFilteredData(res.data);
+//             });
+//         }
+//     } else {
+//         // If search query is not empty
+//         await axios.get(`searchDoc/${search}`, {}).then(res => {
+//             setFilteredData(res.data);
+//         });
+//     }
+//     setIsSearch(true);
+// }, [search, department]);
+
 
 const handleCategory = (e) => {
     const filtered = docData.filter(
@@ -76,7 +100,6 @@ const handleClear = () => {
     setSearch('');
     setFilteredData([]);
     setIsSearch(false);
-    setDepName('')
 };
 
   
@@ -151,4 +174,4 @@ const handleClear = () => {
   );
 }
 
-export default DoctorsCard;
+export default DoctorsCardNewDouble;

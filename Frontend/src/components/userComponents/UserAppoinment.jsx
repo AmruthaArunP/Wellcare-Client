@@ -121,7 +121,7 @@ useEffect(() => {
   socket.on('room:join', handleJoinRoom)
 
   return () => {
-      console.log('useEffect return called ' );
+      console.log('PATIENT: useEffect => useEffect return called. room:join : socket.off' );
       socket.off('room:join', handleJoinRoom)
   }
 }, [socket, handleJoinRoom])

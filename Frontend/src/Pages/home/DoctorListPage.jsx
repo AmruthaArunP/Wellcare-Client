@@ -4,6 +4,8 @@ import DoctorsCard from '../../components/DoctorsCard'
 import Footer from '../../components/home/Footer'
 import Search from '../../components/home/Search'
 import NavbarUser from '../../components/userComponents/NavbarUser'
+import DoctorsCardNew from '../../components/DoctorsCardNew'
+import DoctorsCardNewDouble from '../../components/DoctorsCardNewDouble'
 
 
 
