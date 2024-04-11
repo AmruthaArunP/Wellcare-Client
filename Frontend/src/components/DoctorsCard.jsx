@@ -52,7 +52,7 @@ const handleSearch = useCallback(async (e) => {
         }else{
             await axios.get(`searchDoc/${search}`, {
             }).then(res => {
-                console.log('search data response:',res.data);
+                console.log('search data response:=>',res.data);
                 setFilteredData(res.data)
             })
         }
