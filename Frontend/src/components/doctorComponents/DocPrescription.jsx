@@ -1,13 +1,35 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 
 function DocPrescription() {
   
   const navigate = useNavigate()
+  const [prescriptions, setPrescriptions] = useState([])
+  const doctorToken = localStorage.getItem('doctorToken')
 
   const handleCreateButton = () => {
     navigate('/doctor-createPrscription')
   }
+
+  const dataCall = useCallback(async () => {
+    try {
+      const response = await doctorAxios.get('doctor/prescriptions', );
+      if (response.data === 'blocked') {
+        navigate('/login')
+        localStorage.removeItem('doctorToken')
+      } else {
+        console.log(response.data);
+        setPrescriptions(response.data)
+      }
+    } catch (error) {
+      console.error('Error fetching prescriptions:', error);
+    }
+  }, [navigate, doctorToken]);
+
+  useEffect(() => {
+    dataCall();
+  }, [dataCall]);
 
   return (
     <div className='text-center p-3 m-5 border rounded-lg shadow-lg '>
@@ -17,6 +39,28 @@ function DocPrescription() {
           Create Prescription
         </button>
       </div>
+      {prescriptions.length !== 0 && prescriptions.map((el, index) => (
+        <div key={index} className="bg-white rounded-lg shadow-lg mb-4">
+          <div className="p-4 md:flex justify-between items-center">
+            <div className="md:w-1/3 mb-4 md:mb-0">
+              <h4 className="text-lg font-semibold">{el.userData[0].userName}</h4>
+              <p className="text-sm">{el.date}</p>
+              <p className="text-sm">{el.time}</p>
+            </div>
+            <div className="md:w-1/3">
+              {el.medicines && Object.entries(el.medicines).map(([key, value]) => (
+                <div key={key} className="mb-2">
+                  <span className="font-semibold">{key}:</span> {value}
+                </div>
+              ))}
+            </div>
+            <div className="md:w-1/3 flex justify-end">
+              {/* {el.medicines && <DownloadButton el={el} user={userData} />} */}
+            </div>
+          </div><br/><br/>
+        </div>
+      ))}
+
     </div>
   )
 }
