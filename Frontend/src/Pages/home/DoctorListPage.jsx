@@ -13,7 +13,7 @@ function DoctorListPage() {
   return (
     <>
     <NavbarUser/>
-    <DoctorsCard/>
+    {/* <DoctorsCard/> */}
     <Footer/> 
     </>
 
