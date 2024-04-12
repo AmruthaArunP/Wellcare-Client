@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import doctorAxios from '../../services/doctorAxiosInterceptor.js'
+import useAuth from '../../context/hooks/useAuth.js'
 
 function DocPrescription() {
   
   const navigate = useNavigate()
   const [prescriptions, setPrescriptions] = useState([])
   const doctorToken = localStorage.getItem('doctorToken')
+  const { setDoctor } = useAuth()
+
 
   const handleCreateButton = () => {
     navigate('/doctor-createPrscription')
@@ -15,10 +18,12 @@ function DocPrescription() {
   const dataCall = useCallback(async () => {
     try {
       const response = await doctorAxios.get('doctor/prescriptions', );
-      if (response.data === 'blocked') {
-        navigate('/login')
+      if( response.data === 'blocked'){
         localStorage.removeItem('doctorToken')
-      } else {
+        setDoctor(false);
+        navigate('/doctor-login',{ state: { errorMsg: 'User is blocked' } })
+        setErrorMsg('user is blocked')
+      }else {
         console.log(response.data);
         setPrescriptions(response.data)
       }

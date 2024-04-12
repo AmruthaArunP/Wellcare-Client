@@ -3,6 +3,7 @@ import axios from '../../services/axiosInterceptor.js';
 // import DownloadButton from './download';
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../context/hooks/useAuth.js';
 
 function Prescription() {
 
@@ -10,6 +11,7 @@ function Prescription() {
   const userData = useSelector(state => state.user.data)
   const [prescriptions, setPrescriptions] = useState([])
   const userToken = localStorage.getItem('userToken')
+  const { setUser } = useAuth()
 
   const dataCall = useCallback(async () => {
     try {
@@ -17,6 +19,7 @@ function Prescription() {
       if (response.data === 'blocked') {
         history('/login')
         localStorage.removeItem('userToken')
+        setUser(false);
       } else {
         console.log(response.data);
         setPrescriptions(response.data)

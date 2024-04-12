@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
 import axios from "../services/axiosInterceptor.js";
+import doctorAxios from "../services/doctorAxiosInterceptor.js";
 import { validateEmail } from "./Validation.js";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 import PropTypes from 'prop-types'
+import useAuth from "../context/hooks/useAuth.js";
 ForgotPassword.propTypes = {
   user: PropTypes.string
 }
@@ -26,11 +28,21 @@ function ForgotPassword({ user }) {
       setErrorMsg('Please enter a valid email address');
     } else {
       try {
-        const res = await axios.get(
-          user === 'doctor'
-            ? `doctor/forgotPassword/${email}`
-            : `forgotPassword/${email}`
-        );
+
+        let url;
+        if (user === 'doctor') {
+          url = `doctor/forgotPassword/${email}`;
+        } else {
+          url = `forgotPassword/${email}`;
+        }
+    
+        const res = user === 'doctor' ? await doctorAxios.get(url) : await axios.get(url);
+
+        // const res = await axios.get(
+        //   user === 'doctor'
+        //     ? `doctor/forgotPassword/${email}`
+        //     : `forgotPassword/${email}`
+        // );
         if (res.data === 'success') {
           setErrorMsg('');
           setShowEmailInput(false);

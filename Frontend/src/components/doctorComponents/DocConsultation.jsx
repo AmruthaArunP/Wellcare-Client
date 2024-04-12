@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/socket/socketProvider.jsx";
 import { format } from "date-fns";
+import useAuth from "../../context/hooks/useAuth.js";
 
 function DocConsultation() {
   const doctorToken = localStorage.getItem("doctorToken");
@@ -15,6 +16,8 @@ function DocConsultation() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = localStorage.getItem("doctorEmail");
+  const { setDoctor } = useAuth();
+
   console.log("DocConsultation => INIT => dr email is:", email);
 
   useEffect(() => {
@@ -29,7 +32,12 @@ function DocConsultation() {
       try {
         const appointData = await doctorAxios.get("doctor/consult");
 
-        if (appointData.data) {
+        if( appointData.data === 'blocked'){
+          localStorage.removeItem('doctorToken')
+          setDoctor(false);
+          navigate('/login',{ state: { errorMsg: 'User is blocked' } })
+          setErrorMsg('user is blocked')
+        }else {
           const sortedAppointments = appointData.data.sort((a, b) => {
             // Convert dates to Date objects for comparison
             const dateA = new Date(a.date);

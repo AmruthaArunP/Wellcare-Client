@@ -3,6 +3,7 @@ import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 import { setScheduleData } from "../../redux/doctorSchedule.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../context/hooks/useAuth.js";
 
 
 function DocSchedule() {
@@ -12,6 +13,8 @@ function DocSchedule() {
   const scheduleList = useSelector((state) => state.docSchedule.schedule);
   const doctorToken = localStorage.getItem('doctorToken');
   const [msg , setMsg] = useState('')
+  const { setDoctor } = useAuth();
+
 
   const hanbleAddButton = () => {
     navigete('/add-schedule-timings')
@@ -41,7 +44,12 @@ function DocSchedule() {
   useEffect(() => {
     const dataCall = async () => {
       const response = await doctorAxios.get('doctor/getSchedule')
-      if(response.data){
+      if( response.data === 'blocked'){
+        localStorage.removeItem('doctorToken')
+        setDoctor(false);
+        navigete('/doctor-login',{ state: { errorMsg: 'User is blocked' } })
+        setErrorMsg('user is blocked')
+      }else {
         const currentDate = new Date();
         console.log('getting:', response.data);
         dispatch(setScheduleData(response.data))

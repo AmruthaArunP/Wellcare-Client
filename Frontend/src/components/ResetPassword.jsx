@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from '../services/axiosInterceptor.js'
 import { validatePassword } from "./Validation";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import useAuth from "../context/hooks/useAuth.js";
 
 function ResetPassword({value}) {
 
@@ -9,6 +10,8 @@ function ResetPassword({value}) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const { setUser, setDoctor} = useAuth()
+
 
   const { email } = useParams();
   const navigate = useNavigate()
@@ -40,11 +43,13 @@ function ResetPassword({value}) {
       value === 'doctor' ? (
         setTimeout(() => {
           localStorage.removeItem('doctorToken')
+          setDoctor(false)
           navigate('/doctor-login')
       }, 2000)
       ) : (
         setTimeout(() => {
           localStorage.removeItem('userToken')
+          setUser(false);
           navigate('/login')
       }, 2000)
       )

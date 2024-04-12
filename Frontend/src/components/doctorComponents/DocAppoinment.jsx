@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import doctorAxios from '../../services/doctorAxiosInterceptor.js'
 import DataTables from '../adminComponents/DataTables.jsx';
+import useAuth from '../../context/hooks/useAuth.js';
 
 function DocAppoinment() {
 
@@ -8,6 +9,8 @@ function DocAppoinment() {
   const [search, setSearch] = useState('');
   const [appointments, setAppointments] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const { setDoctor } = useAuth()
+
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase()
@@ -54,7 +57,12 @@ function DocAppoinment() {
   useEffect(() => {
     const fetchAppoinment =  async () => {
       const response =  await doctorAxios.get("doctor/doctorAppoinments") 
-      if(response.data){
+      if( response.data === 'blocked'){
+        localStorage.removeItem('doctorToken')
+        setDoctor(false);
+        navigete('/doctor-login',{ state: { errorMsg: 'User is blocked' } })
+        setErrorMsg('user is blocked')
+      }else{
         console.log('appoinmnet:',response.data);
         setAppointments(response.data)
         setFilteredData(response.data)

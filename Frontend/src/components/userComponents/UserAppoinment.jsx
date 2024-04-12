@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../../context/socket/socketProvider.jsx'
 import { useDispatch, useSelector } from 'react-redux';
 import { addChatRoomId } from '../../redux/chatSlice.js';
+import useAuth from '../../context/hooks/useAuth.js';
 
 function UserAppoinment() {
 
@@ -18,6 +19,8 @@ function UserAppoinment() {
   const email = localStorage.getItem('userEmail')
   console.log('email is:', email);
   const dispatch = useDispatch()
+  const { setUser } = useAuth()
+
 
   const date = new Date();
   const formattedDate = format(date, 'dd-MM-yyyy');
@@ -39,6 +42,7 @@ function UserAppoinment() {
     const response =await axios.post(`cancelAppoinment/${id}`, null)
     if(response.data === 'blocked'){
       history('/login')
+      setUser(false);
       localStorage.removeItem('userToken')
     }else{
       const updatedArray = appointments.length != 0 && appointments.map((item) => {
@@ -71,6 +75,7 @@ function UserAppoinment() {
         const response = await axios.get('userAppoinments', )
       if( response.data === 'blocked'){
         localStorage.removeItem('userToken')
+        setUser(false);
         navigate('/login',{ state: { errorMsg: 'User is blocked' } })
         setErrorMsg('user is blocked')
       }else{
