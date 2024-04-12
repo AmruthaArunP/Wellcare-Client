@@ -10,6 +10,12 @@ import doctorAxios from "../services/doctorAxiosInterceptor.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserdata } from "../redux/userData.js";
 import { setDoctorData } from "../redux/doctorData.js";
+import Proptype from 'prop-types'
+
+Login.Proptype = {
+  value: Proptype.string
+}
+
 
 function Login({ value }) {
   const navigate = useNavigate();

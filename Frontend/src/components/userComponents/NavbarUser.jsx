@@ -49,7 +49,7 @@ function NavbarUser() {
           <Link to="/specialities" className="mx-4 text-xl hover:text-black text-white">
             SPECIALTIES
           </Link>
-          <Link to="#" className="mx-4 text-xl hover:text-black text-white">
+          <Link to="/contact-us" className="mx-4 text-xl hover:text-black text-white">
             CONTACT US
           </Link>
         </div>

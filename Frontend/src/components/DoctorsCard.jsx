@@ -14,6 +14,7 @@ function DoctorsCard() {
   const [postPerPage] = useState(3);
   const [search, setSearch] = useState("");
   const [isSearch, setIsSearch] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -70,6 +71,7 @@ function DoctorsCard() {
     setFilteredData(filtered);
     setCurrentPage(1);
     setDepName(e.target.value)
+    setSelectedOption(e.target.value)
     setIsSearch(true);
   };
 
@@ -78,6 +80,7 @@ function DoctorsCard() {
     setFilteredData([]);
     setIsSearch(false);
     setDepName('')
+    setSelectedOption('')
   };
 
 
@@ -112,10 +115,10 @@ function DoctorsCard() {
           <div className="flex p-4 gap-4">
             <div className="text-left mx-auto" style={{ maxWidth: '300px' }}>
               <select
-                className="border-b border-gray-300 py-2 px-2 bg-teal-500 rounded font-bold"
+                className="border-b border-gray-300 py-2 px-2 bg-teal-500 rounded font-bold" value={selectedOption}
                 onChange={(e) => handleCategory(e)}
               >
-                <option value="">Select Specialities</option>
+                <option value="">Select Specialties</option>
                 {department ? (
                   department.map((dep) => (
                     <option key={dep._id} value={dep.name}>{dep.name}</option>
@@ -126,7 +129,7 @@ function DoctorsCard() {
               </select>
             </div>
             <div className="border-b border-gray-300 py-2 px-2 bg-gray-200 rounded font-bold ">
-              <span onClick={handleClear} className="cursor-pointer text-sm text-green-500 ">Clear</span>
+              <button onClick={handleClear} className="cursor-pointer text-sm text-green-500 ">Clear</button>
             </div>
           </div>
         </div>

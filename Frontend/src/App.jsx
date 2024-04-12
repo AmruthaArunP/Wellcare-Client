@@ -31,6 +31,7 @@ import DoctorsInSpecialityPage from './Pages/home/DoctorsInSpecialityPage';
 import RequireAdmin from './context/auth/RequireAdmin';
 import DoctorChatPage from './Pages/doctor/DoctorChatPage';
 import UserChatPage from './Pages/user/UserChatPage';
+import ContactPage from './Pages/home/ContactPage';
 // import UserVideoCall from './components/userComponents/UserVideoCall';
 
 
@@ -58,6 +59,7 @@ function App() {
           <Route path='/reset-password/:email' element={<ResetPasswordPage/>}/>
           <Route path='/findDoctors' element={<DoctorListPage />}/>
           <Route path='/specialities' element={<SpecialitiesPage/>}/>
+          <Route path='/contact-us' element={<ContactPage/>}/>
           <Route path='/doctors-department/:specialityName' element={<DoctorsInSpecialityPage/>}/>
 
           <Route element={<RequireUser/>}>
