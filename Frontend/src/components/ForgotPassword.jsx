@@ -3,6 +3,10 @@ import axios from "../services/axiosInterceptor.js";
 import { validateEmail } from "./Validation.js";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
+import PropTypes from 'prop-types'
+ForgotPassword.propTypes = {
+  user: PropTypes.string
+}
 
 
 function ForgotPassword({ user }) {

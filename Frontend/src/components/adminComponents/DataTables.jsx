@@ -2,7 +2,7 @@ import React from 'react'
 import DataTable from 'react-data-table-component'
 import PropTypes from 'prop-types'
 
-DataTable.propTypes = {
+DataTables.propTypes = {
     columns: PropTypes.array,
     data: PropTypes.array
 }

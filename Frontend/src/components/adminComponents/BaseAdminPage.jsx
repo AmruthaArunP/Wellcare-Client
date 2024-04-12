@@ -7,6 +7,10 @@ import useAuth from "../../context/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import AdminDashboard from "./AdminDashboard";
 import CreateDepartment from "./CreateDepartment";
+import PropTypes from 'prop-types'
+BaseAdminPage.propTypes = {
+  value: PropTypes.string
+}
 
 function BaseAdminPage({ value }) {
   const navigate = useNavigate()
